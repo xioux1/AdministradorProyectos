@@ -12,10 +12,12 @@ public class MenuPanel extends JPanel {
         JButton proyectos = new JButton("Proyectos");
         JButton empleados = new JButton("Empleados");
         JButton reportes = new JButton("Reportes");
+        JButton asignaciones = new JButton("Asignaciones");
         tareas.addActionListener(e->manager.mostrar(manager.getTareaPanel()));
         proyectos.addActionListener(e->manager.mostrar(manager.getProyectoPanel()));
         empleados.addActionListener(e->manager.mostrar(manager.getEmpleadoPanel()));
         reportes.addActionListener(e->manager.mostrar(manager.getReportePanel()));
-        add(tareas);add(proyectos);add(empleados);add(reportes);
+        asignaciones.addActionListener(e->manager.mostrar(manager.getAsignacionPanel()));
+        add(tareas);add(proyectos);add(empleados);add(asignaciones);add(reportes);
     }
 }

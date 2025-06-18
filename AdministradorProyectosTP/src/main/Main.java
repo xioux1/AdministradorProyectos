@@ -35,7 +35,7 @@ public class Main {
         ReporteService repSvc      = new ReporteServiceImpl(tareaDao);
 
         AppManager  mgr   = new AppManager();
-        mgr.initPanels(tareaSvc, projSvc, empSvc, repSvc);
+        mgr.initPanels(tareaSvc, projSvc, empSvc, asigSvc, repSvc);
 
         SwingUtilities.invokeLater(() ->
             mgr.mostrar(mgr.getMenuPanel())

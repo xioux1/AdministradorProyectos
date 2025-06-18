@@ -11,6 +11,7 @@ public final class AppManager {
     private TareaPanel tareaPanel;
     private ProyectoPanel proyectoPanel;
     private EmpleadoPanel empleadoPanel;
+    private AsignacionPanel asignacionPanel;
     private ReportePanel reportePanel;
     private MenuPanel menuPanel;
 
@@ -26,10 +27,13 @@ public final class AppManager {
     }
     public void start() { frame.setVisible(true); }
 
-    public void initPanels(TareaService ts, ProyectoService ps, EmpleadoService es, ReporteService rs) {
+    public void initPanels(TareaService ts, ProyectoService ps,
+                           EmpleadoService es, AsignacionService as,
+                           ReporteService rs) {
         tareaPanel = new TareaPanel(this, ts);
         proyectoPanel = new ProyectoPanel(this, ps);
         empleadoPanel = new EmpleadoPanel(this, es);
+        asignacionPanel = new AsignacionPanel(this, as, ps);
         reportePanel = new ReportePanel(this, rs);
         menuPanel = new MenuPanel(this);
     }
@@ -37,6 +41,7 @@ public final class AppManager {
     public JPanel getTareaPanel(){return tareaPanel;}
     public JPanel getProyectoPanel(){return proyectoPanel;}
     public JPanel getEmpleadoPanel(){return empleadoPanel;}
+    public JPanel getAsignacionPanel(){return asignacionPanel;}
     public JPanel getReportePanel(){return reportePanel;}
     public JPanel getMenuPanel(){return menuPanel;}
 }
