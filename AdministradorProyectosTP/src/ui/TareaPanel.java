@@ -27,7 +27,7 @@ public class TareaPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
 
         modelo = new DefaultTableModel(
-                new Object[]{"ID", "Título", "Horas Est.", "Horas Reales"}, 0) {
+                new Object[]{"ID", "Título", "Horas Est.", "Horas Reales", "Proyecto", "Empleado", "Costo"}, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
@@ -91,7 +91,8 @@ public class TareaPanel extends JPanel {
                     for (model.Tarea t : tareas) {
                         modelo.addRow(new Object[]{
                                 t.getId(), t.getTitulo(),
-                                t.getHorasEstimadas(), t.getHorasReales()
+                                t.getHorasEstimadas(), t.getHorasReales(),
+                                t.getProyectoId(), t.getEmpleadoId(), t.getCostoHora()
                         });
                     }
                 } catch (Exception ex) {
@@ -129,12 +130,18 @@ public class TareaPanel extends JPanel {
         JTextField descTxt   = new JTextField();
         JTextField estTxt    = new JTextField();
         JTextField realTxt   = new JTextField();
+        JTextField proyectoTxt = new JTextField();
+        JTextField empleadoTxt = new JTextField();
+        JTextField costoTxt    = new JTextField();
 
         if (existente != null) {
             tituloTxt.setText(existente.getTitulo());
             descTxt.setText(existente.getDescripcion());
             estTxt.setText(String.valueOf(existente.getHorasEstimadas()));
             realTxt.setText(String.valueOf(existente.getHorasReales()));
+            proyectoTxt.setText(String.valueOf(existente.getProyectoId()));
+            empleadoTxt.setText(String.valueOf(existente.getEmpleadoId()));
+            costoTxt.setText(String.valueOf(existente.getCostoHora()));
         }
 
         JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -142,6 +149,9 @@ public class TareaPanel extends JPanel {
         form.add(new JLabel("Descripción:"));     form.add(descTxt);
         form.add(new JLabel("Horas Estimadas:")); form.add(estTxt);
         form.add(new JLabel("Horas Reales:"));    form.add(realTxt);
+        form.add(new JLabel("Proyecto ID:"));    form.add(proyectoTxt);
+        form.add(new JLabel("Empleado ID:"));    form.add(empleadoTxt);
+        form.add(new JLabel("Costo Hora:"));     form.add(costoTxt);
 
         int res = JOptionPane.showConfirmDialog(
                 this, form,
@@ -154,11 +164,15 @@ public class TareaPanel extends JPanel {
                 String desc   = descTxt.getText();
                 int est       = Integer.parseInt(estTxt.getText());
                 int real      = Integer.parseInt(realTxt.getText());
+                int proyecto  = Integer.parseInt(proyectoTxt.getText());
+                int empleado  = Integer.parseInt(empleadoTxt.getText());
+                int costo     = Integer.parseInt(costoTxt.getText());
 
                 if (existente == null) {
-                    service.alta(titulo, desc, est, real);
+                    service.alta(titulo, desc, est, real, proyecto, empleado, costo);
                 } else {
-                    service.modificar(existente.getId(), titulo, desc, est, real);
+                    service.modificar(existente.getId(), titulo, desc, est, real,
+                                      proyecto, empleado, costo);
                 }
                 refrescarTabla();
 

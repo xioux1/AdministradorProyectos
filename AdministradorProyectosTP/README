@@ -5,6 +5,8 @@ Tema elegido: Administración de proyectos (Tema 7)
 Alcance de esta entrega:
 
 CRUD completo de Tarea (alta, baja, modificación, consulta, listado)
+CRUD de Proyecto y Empleado
+Las tareas se vinculan a un proyecto y un empleado con costo por hora
 
 Arquitectura en tres capas: UI → Service → DAO
 
