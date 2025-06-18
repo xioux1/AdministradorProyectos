@@ -9,6 +9,7 @@ public class Tarea {
     private String descripcion;
     private int horasEstimadas;
     private int horasReales;
+       klh9ts-codex/add-sprint-dates-and-kanban-board
     private LocalDate inicioSprint;
     private LocalDate finSprint;
     private EstadoTarea estado;
@@ -25,14 +26,37 @@ public class Tarea {
                  int horasEstimadas, int horasReales,
                  LocalDate inicioSprint, LocalDate finSprint,
                  EstadoTarea estado) {
+
+    private int proyectoId;
+    private int empleadoId;
+    private int costoHora;
+    
+    public Tarea(String titulo, String descripcion,
+                 int horasEstimadas, int horasReales,
+                 int proyectoId, int empleadoId, int costoHora) {
+        this(0, titulo, descripcion, horasEstimadas, horasReales,
+             proyectoId, empleadoId, costoHora);
+    }
+
+
+    public Tarea(int id, String titulo, String descripcion,
+                 int horasEstimadas, int horasReales,
+                 int proyectoId, int empleadoId, int costoHora) {
+        main
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.horasEstimadas = horasEstimadas;
         this.horasReales = horasReales;
+        klh9ts-codex/add-sprint-dates-and-kanban-board
         this.inicioSprint = inicioSprint;
         this.finSprint = finSprint;
         this.estado = estado;
+
+        this.proyectoId = proyectoId;
+        this.empleadoId = empleadoId;
+        this.costoHora = costoHora;
+        main
     }
 
     // Getters y Setters
@@ -51,6 +75,7 @@ public class Tarea {
     public int getHorasReales() { return horasReales; }
     public void setHorasReales(int horasReales) { this.horasReales = horasReales; }
 
+        klh9ts-codex/add-sprint-dates-and-kanban-board
     public LocalDate getInicioSprint() { return inicioSprint; }
     public void setInicioSprint(LocalDate inicioSprint) { this.inicioSprint = inicioSprint; }
 
@@ -62,4 +87,14 @@ public class Tarea {
 
     @Override
     public String toString() { return titulo; }
+
+    public int getProyectoId() { return proyectoId; }
+    public void setProyectoId(int proyectoId) { this.proyectoId = proyectoId; }
+
+    public int getEmpleadoId() { return empleadoId; }
+    public void setEmpleadoId(int empleadoId) { this.empleadoId = empleadoId; }
+
+    public int getCostoHora() { return costoHora; }
+    public void setCostoHora(int costoHora) { this.costoHora = costoHora; }
+     main
 }

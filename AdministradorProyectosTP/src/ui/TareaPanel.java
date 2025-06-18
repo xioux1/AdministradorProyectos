@@ -28,7 +28,11 @@ public class TareaPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
 
         modelo = new DefaultTableModel(
+       klh9ts-codex/add-sprint-dates-and-kanban-board
                 new Object[]{"ID", "Título", "Horas Est.", "Horas Reales", "Estado"}, 0) {
+
+                new Object[]{"ID", "Título", "Horas Est.", "Horas Reales", "Proyecto", "Empleado", "Costo"}, 0) {
+         main
             @Override public boolean isCellEditable(int r, int c) { return false; }
         };
 
@@ -93,7 +97,11 @@ public class TareaPanel extends JPanel {
                         modelo.addRow(new Object[]{
                                 t.getId(), t.getTitulo(),
                                 t.getHorasEstimadas(), t.getHorasReales(),
+
                                 t.getEstado()
+
+                                t.getProyectoId(), t.getEmpleadoId(), t.getCostoHora()
+       main
                         });
                     }
                 } catch (Exception ex) {
@@ -131,21 +139,32 @@ public class TareaPanel extends JPanel {
         JTextField descTxt   = new JTextField();
         JTextField estTxt    = new JTextField();
         JTextField realTxt   = new JTextField();
+
         JTextField inicioTxt = new JTextField();
         JTextField finTxt    = new JTextField();
         JComboBox<model.EstadoTarea> estadoBox = new JComboBox<>(model.EstadoTarea.values());
+
+        JTextField proyectoTxt = new JTextField();
+        JTextField empleadoTxt = new JTextField();
+ main
 
         if (existente != null) {
             tituloTxt.setText(existente.getTitulo());
             descTxt.setText(existente.getDescripcion());
             estTxt.setText(String.valueOf(existente.getHorasEstimadas()));
             realTxt.setText(String.valueOf(existente.getHorasReales()));
+ klh9ts-codex/add-sprint-dates-and-kanban-board
             if (existente.getInicioSprint() != null)
                 inicioTxt.setText(existente.getInicioSprint().toString());
             if (existente.getFinSprint() != null)
                 finTxt.setText(existente.getFinSprint().toString());
             if (existente.getEstado() != null)
                 estadoBox.setSelectedItem(existente.getEstado());
+
+            proyectoTxt.setText(String.valueOf(existente.getProyectoId()));
+            empleadoTxt.setText(String.valueOf(existente.getEmpleadoId()));
+            costoTxt.setText(String.valueOf(existente.getCostoHora()));
+ main
         }
 
         JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -153,9 +172,14 @@ public class TareaPanel extends JPanel {
         form.add(new JLabel("Descripción:"));     form.add(descTxt);
         form.add(new JLabel("Horas Estimadas:")); form.add(estTxt);
         form.add(new JLabel("Horas Reales:"));    form.add(realTxt);
+ klh9ts-codex/add-sprint-dates-and-kanban-board
         form.add(new JLabel("Inicio Sprint:"));   form.add(inicioTxt);
         form.add(new JLabel("Fin Sprint:"));      form.add(finTxt);
-        form.add(new JLabel("Estado:"));          form.add(estadoBox);
+
+        form.add(new JLabel("Proyecto ID:"));    form.add(proyectoTxt);
+        form.add(new JLabel("Empleado ID:"));    form.add(empleadoTxt);
+        form.add(new JLabel("Costo Hora:"));     form.add(costoTxt);
+ main
 
         int res = JOptionPane.showConfirmDialog(
                 this, form,
@@ -168,6 +192,7 @@ public class TareaPanel extends JPanel {
                 String desc   = descTxt.getText();
                 int est       = Integer.parseInt(estTxt.getText());
                 int real      = Integer.parseInt(realTxt.getText());
+ klh9ts-codex/add-sprint-dates-and-kanban-board
                 java.time.LocalDate inicio = inicioTxt.getText().isBlank() ? null : java.time.LocalDate.parse(inicioTxt.getText());
                 java.time.LocalDate fin    = finTxt.getText().isBlank() ? null : java.time.LocalDate.parse(finTxt.getText());
                 model.EstadoTarea estado   = (model.EstadoTarea) estadoBox.getSelectedItem();
@@ -176,6 +201,17 @@ public class TareaPanel extends JPanel {
                     service.alta(titulo, desc, est, real, inicio, fin, estado);
                 } else {
                     service.modificar(existente.getId(), titulo, desc, est, real, inicio, fin, estado);
+
+                int proyecto  = Integer.parseInt(proyectoTxt.getText());
+                int empleado  = Integer.parseInt(empleadoTxt.getText());
+                int costo     = Integer.parseInt(costoTxt.getText());
+
+                if (existente == null) {
+                    service.alta(titulo, desc, est, real, proyecto, empleado, costo);
+                } else {
+                    service.modificar(existente.getId(), titulo, desc, est, real,
+                                      proyecto, empleado, costo);
+main
                 }
                 refrescarTabla();
 
