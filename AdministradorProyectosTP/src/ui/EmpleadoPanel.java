@@ -25,7 +25,7 @@ public class EmpleadoPanel extends JPanel {
 
         setLayout(new BorderLayout(10,10));
 
-        modelo = new DefaultTableModel(new Object[]{"ID","Nombre"},0){
+        modelo = new DefaultTableModel(new Object[]{"ID","Nombre","Costo Hora"},0){
             @Override public boolean isCellEditable(int r,int c){return false;}
         };
 
@@ -36,7 +36,7 @@ public class EmpleadoPanel extends JPanel {
                 "Agregar","Eliminar","Volver",
                 e->abrirFormulario(null),
                 e->eliminarSeleccionada(),
-                e->manager.mostrar(this)
+                e->manager.mostrar(manager.getMenuPanel())
         );
         add(botones, BorderLayout.SOUTH);
 
@@ -65,7 +65,7 @@ public class EmpleadoPanel extends JPanel {
             @Override protected List<model.Empleado> doInBackground(){
                 try{return service.listado();}catch(ServiceException se){throw new RuntimeException(se);} }
             @Override protected void done(){
-                try{List<model.Empleado> ps=get();modelo.setRowCount(0);for(model.Empleado p:ps){modelo.addRow(new Object[]{p.getId(),p.getNombre()});}}
+                try{List<model.Empleado> ps=get();modelo.setRowCount(0);for(model.Empleado p:ps){modelo.addRow(new Object[]{p.getId(),p.getNombre(),p.getCostoHora()});}}
                 catch(Exception ex){mostrarError("No se pudo listar.");}
             }
         }.execute();
@@ -83,15 +83,21 @@ public class EmpleadoPanel extends JPanel {
 
     private void abrirFormulario(model.Empleado existente){
         JTextField nombreTxt=new JTextField();
-        if(existente!=null){nombreTxt.setText(existente.getNombre());}
+        JTextField costoTxt=new JTextField();
+        if(existente!=null){
+            nombreTxt.setText(existente.getNombre());
+            costoTxt.setText(String.valueOf(existente.getCostoHora()));
+        }
         JPanel form=new JPanel(new GridLayout(0,2,5,5));
         form.add(new JLabel("Nombre:"));form.add(nombreTxt);
+        form.add(new JLabel("Costo Hora:"));form.add(costoTxt);
 
         int res=JOptionPane.showConfirmDialog(this,form,existente==null?"Agregar empleado":"Editar empleado",JOptionPane.OK_CANCEL_OPTION);
         if(res==JOptionPane.OK_OPTION){
             try{
                 String nombre=nombreTxt.getText();
-                if(existente==null){service.alta(nombre);}else{service.modificar(existente.getId(),nombre);}refrescarTabla();
+                int costo=Integer.parseInt(costoTxt.getText());
+                if(existente==null){service.alta(nombre,costo);}else{service.modificar(existente.getId(),nombre,costo);}refrescarTabla();
             }catch(ValidacionException ve){mostrarWarn(ve.getMessage());}
             catch(ServiceException se){mostrarError("No se pudo guardar.");}
         }

@@ -25,7 +25,6 @@ src/ui   – pantallas Swing
 src/service – lógica y validación
 src/dao – acceso a datos (in‑memory y JDBC)
 src/model – POJOs
-a.sql/schema.sql – script de tabla tarea
 
 Cómo ejecutar:
 

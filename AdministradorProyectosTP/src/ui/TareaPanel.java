@@ -39,7 +39,12 @@ public class TareaPanel extends JPanel {
                 e -> eliminarSeleccionada(),
                 e -> manager.mostrar(new KanbanPanel(manager, service))
         );
-        add(botones, BorderLayout.SOUTH);
+        JPanel south = new JPanel(new BorderLayout());
+        south.add(botones, BorderLayout.CENTER);
+        JButton volver = new JButton("Volver");
+        volver.addActionListener(e -> manager.mostrar(manager.getMenuPanel()));
+        south.add(volver, BorderLayout.EAST);
+        add(south, BorderLayout.SOUTH);
 
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -137,6 +142,8 @@ public class TareaPanel extends JPanel {
         JTextField proyectoTxt = new JTextField();
         JTextField empleadoTxt = new JTextField();
         JTextField costoTxt    = new JTextField();
+        JTextArea histArea = new JTextArea();
+        histArea.setEditable(false);
 
         if (existente != null) {
             tituloTxt.setText(existente.getTitulo());
@@ -153,6 +160,12 @@ public class TareaPanel extends JPanel {
             proyectoTxt.setText(String.valueOf(existente.getProyectoId()));
             empleadoTxt.setText(String.valueOf(existente.getEmpleadoId()));
             costoTxt.setText(String.valueOf(existente.getCostoHora()));
+            try {
+                java.util.List<model.HistorialEstado> hs = service.historial(existente.getId());
+                for(model.HistorialEstado h: hs){
+                    histArea.append(h.getFecha()+" - "+h.getEstado()+" - "+h.getResponsable()+"\n");
+                }
+            } catch(ServiceException ignore) {}
         }
 
         JPanel form = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -167,6 +180,7 @@ public class TareaPanel extends JPanel {
         form.add(new JLabel("Empleado ID:"));    form.add(empleadoTxt);
         form.add(new JLabel("Costo Hora:"));     form.add(costoTxt);
         form.add(new JLabel("Estado:"));         form.add(estadoBox);
+        form.add(new JLabel("Historial:"));      form.add(new JScrollPane(histArea));
 
         int res = JOptionPane.showConfirmDialog(
                 this, form,

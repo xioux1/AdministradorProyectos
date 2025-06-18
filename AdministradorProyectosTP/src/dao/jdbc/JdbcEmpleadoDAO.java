@@ -24,9 +24,10 @@ public class JdbcEmpleadoDAO implements EmpleadoDAO {
 
     @Override
     public void crear(Empleado e) throws DAOException {
-        String sql = "INSERT INTO empleado(nombre) VALUES (?)";
+        String sql = "INSERT INTO empleado(nombre, costo_hora) VALUES (?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, e.getNombre());
+            ps.setInt(2, e.getCostoHora());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -40,10 +41,11 @@ public class JdbcEmpleadoDAO implements EmpleadoDAO {
 
     @Override
     public void actualizar(Empleado e) throws DAOException {
-        String sql = "UPDATE empleado SET nombre=? WHERE id=?";
+        String sql = "UPDATE empleado SET nombre=?, costo_hora=? WHERE id=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, e.getNombre());
-            ps.setInt(2, e.getId());
+            ps.setInt(2, e.getCostoHora());
+            ps.setInt(3, e.getId());
             ps.executeUpdate();
         } catch (SQLException ex) {
             throw new DAOException("Error al actualizar empleado", ex);
@@ -93,7 +95,8 @@ public class JdbcEmpleadoDAO implements EmpleadoDAO {
         String ddl = """
             CREATE TABLE IF NOT EXISTS empleado (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                nombre VARCHAR(255) NOT NULL
+                nombre VARCHAR(255) NOT NULL,
+                costo_hora INT
             )
         """;
         try (Statement st = conn.createStatement()) {
@@ -104,7 +107,8 @@ public class JdbcEmpleadoDAO implements EmpleadoDAO {
     private Empleado mapRow(ResultSet rs) throws SQLException {
         return new Empleado(
                 rs.getInt("id"),
-                rs.getString("nombre")
+                rs.getString("nombre"),
+                rs.getInt("costo_hora")
         );
     }
 }

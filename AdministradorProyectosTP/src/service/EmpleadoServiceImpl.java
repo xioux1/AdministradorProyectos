@@ -17,20 +17,20 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
-    public void alta(String nombre) throws ValidacionException, ServiceException {
+    public void alta(String nombre, int costoHora) throws ValidacionException, ServiceException {
         ValidadorDeErrores.textoNoVacio(nombre, "Nombre");
         try {
-            dao.crear(new Empleado(nombre));
+            dao.crear(new Empleado(nombre, costoHora));
         } catch (DAOException e) {
             throw new ServiceException("No se pudo guardar el empleado", e);
         }
     }
 
     @Override
-    public void modificar(int id, String nombre) throws ValidacionException, ServiceException {
+    public void modificar(int id, String nombre, int costoHora) throws ValidacionException, ServiceException {
         ValidadorDeErrores.textoNoVacio(nombre, "Nombre");
         try {
-            dao.actualizar(new Empleado(id, nombre));
+            dao.actualizar(new Empleado(id, nombre, costoHora));
         } catch (DAOException e) {
             throw new ServiceException("No se pudo actualizar el empleado", e);
         }
