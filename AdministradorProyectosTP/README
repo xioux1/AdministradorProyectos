@@ -6,6 +6,10 @@ Alcance de esta entrega:
 
 CRUD completo de Tarea (alta, baja, modificación, consulta, listado)
 
+Se añadieron campos de inicio y fin de sprint y un estado para cada tarea.
+Se incluyó un tablero Kanban donde es posible mover las tareas entre
+estados mediante doble clic.
+
 Arquitectura en tres capas: UI → Service → DAO
 
 Persistencia JDBC sobre H2

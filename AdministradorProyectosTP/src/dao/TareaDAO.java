@@ -11,4 +11,5 @@ public interface TareaDAO {
     void eliminar(int id)                     throws DAOException;
     List<Tarea> obtenerTodas()                throws DAOException;
     Optional<Tarea> obtenerPorId(int id)      throws DAOException;
+    void actualizarEstado(int id, model.EstadoTarea estado) throws DAOException;
 }
