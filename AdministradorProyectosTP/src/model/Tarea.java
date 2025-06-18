@@ -2,6 +2,13 @@ package model;
 
 import java.time.LocalDate;
 
+import model.Proyecto;
+import model.Empleado;
+
+/**
+ * Representa una tarea de un proyecto.
+ */
+
 public class Tarea {
     private int id;
     private String titulo;
@@ -12,15 +19,14 @@ public class Tarea {
     private LocalDate finSprint;
     private EstadoTarea estado;
 
-    private int proyectoId;
-    private int empleadoId;
-    private int costoHora;
+    private Proyecto proyecto;
+    private Empleado empleado;
 
     public Tarea(int id, String titulo, String descripcion,
                  int horasEstimadas, int horasReales,
                  LocalDate inicioSprint, LocalDate finSprint,
                  EstadoTarea estado,
-                 int proyectoId, int empleadoId, int costoHora) {
+                 Proyecto proyecto, Empleado empleado) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -29,18 +35,17 @@ public class Tarea {
         this.inicioSprint = inicioSprint;
         this.finSprint = finSprint;
         this.estado = estado;
-        this.proyectoId = proyectoId;
-        this.empleadoId = empleadoId;
-        this.costoHora = costoHora;
+        this.proyecto = proyecto;
+        this.empleado = empleado;
     }
 
     public Tarea(String titulo, String descripcion,
                  int horasEstimadas, int horasReales,
                  LocalDate inicioSprint, LocalDate finSprint,
                  EstadoTarea estado,
-                 int proyectoId, int empleadoId, int costoHora) {
+                 Proyecto proyecto, Empleado empleado) {
         this(0, titulo, descripcion, horasEstimadas, horasReales,
-             inicioSprint, finSprint, estado, proyectoId, empleadoId, costoHora);
+             inicioSprint, finSprint, estado, proyecto, empleado);
     }
 
     public int getId() { return id; }
@@ -67,14 +72,15 @@ public class Tarea {
     public EstadoTarea getEstado() { return estado; }
     public void setEstado(EstadoTarea estado) { this.estado = estado; }
 
-    public int getProyectoId() { return proyectoId; }
-    public void setProyectoId(int proyectoId) { this.proyectoId = proyectoId; }
+    public Proyecto getProyecto() { return proyecto; }
+    public void setProyecto(Proyecto proyecto) { this.proyecto = proyecto; }
 
-    public int getEmpleadoId() { return empleadoId; }
-    public void setEmpleadoId(int empleadoId) { this.empleadoId = empleadoId; }
+    public Empleado getEmpleado() { return empleado; }
+    public void setEmpleado(Empleado empleado) { this.empleado = empleado; }
 
-    public int getCostoHora() { return costoHora; }
-    public void setCostoHora(int costoHora) { this.costoHora = costoHora; }
+    public int getCostoHora() {
+        return empleado != null ? empleado.getCostoHora() : 0;
+    }
 
     @Override
     public String toString() {

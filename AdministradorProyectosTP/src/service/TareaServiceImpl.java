@@ -3,7 +3,11 @@ package service;
 import dao.DAOException;
 import dao.TareaDAO;
 import dao.HistorialDAO;
+import dao.ProyectoDAO;
+import dao.EmpleadoDAO;
 import model.Tarea;
+import model.Proyecto;
+import model.Empleado;
 import model.HistorialEstado;
 import validacion.ValidacionException;
 import validacion.ValidadorDeErrores;
@@ -15,10 +19,15 @@ public class TareaServiceImpl implements TareaService {
 
     private final TareaDAO dao;
     private final HistorialDAO historialDao;
+    private final ProyectoDAO proyectoDao;
+    private final EmpleadoDAO empleadoDao;
 
-    public TareaServiceImpl(TareaDAO dao, HistorialDAO historialDao) {
+    public TareaServiceImpl(TareaDAO dao, HistorialDAO historialDao,
+                            ProyectoDAO proyectoDao, EmpleadoDAO empleadoDao) {
         this.dao = dao;
         this.historialDao = historialDao;
+        this.proyectoDao = proyectoDao;
+        this.empleadoDao = empleadoDao;
     }
 
     // ------------------------------------ CRUD
@@ -26,14 +35,19 @@ public class TareaServiceImpl implements TareaService {
     @Override
     public void alta(String titulo, String desc, int hEst, int hReal,
                      LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
-                     int proyectoId, int empleadoId, int costoHora)
+                     int proyectoId, int empleadoId)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
+            Proyecto proyecto = proyectoDao.obtenerPorId(proyectoId)
+                    .orElseThrow(() -> new ServiceException("Proyecto inexistente"));
+            Empleado empleado = empleadoDao.obtenerPorId(empleadoId)
+                    .orElseThrow(() -> new ServiceException("Empleado inexistente"));
+
             Tarea t = new Tarea(0, titulo, desc, hEst, hReal,
                                 inicio, fin, estado,
-                                proyectoId, empleadoId, costoHora);
+                                proyecto, empleado);
             dao.crear(t);
             if(estado != null)
                 historialDao.registrar(new HistorialEstado(t.getId(), estado, "creacion", java.time.LocalDateTime.now()));
@@ -45,15 +59,20 @@ public class TareaServiceImpl implements TareaService {
     @Override
     public void modificar(int id, String titulo, String desc, int hEst, int hReal,
                           LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
-                          int proyectoId, int empleadoId, int costoHora)
+                          int proyectoId, int empleadoId)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
             Tarea previa = dao.obtenerPorId(id).orElse(null);
+            Proyecto proyecto = proyectoDao.obtenerPorId(proyectoId)
+                    .orElseThrow(() -> new ServiceException("Proyecto inexistente"));
+            Empleado empleado = empleadoDao.obtenerPorId(empleadoId)
+                    .orElseThrow(() -> new ServiceException("Empleado inexistente"));
+
             dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal,
                                      inicio, fin, estado,
-                                     proyectoId, empleadoId, costoHora));
+                                     proyecto, empleado));
             if(previa != null && previa.getEstado() != estado)
                 historialDao.registrar(new HistorialEstado(id, estado, "modificacion", java.time.LocalDateTime.now()));
         } catch (DAOException ex) {

@@ -97,7 +97,7 @@ public class TareaPanel extends JPanel {
                                 t.getId(), t.getTitulo(),
                                 t.getHorasEstimadas(), t.getHorasReales(),
                                 t.getEstado(),
-                                t.getProyectoId(), t.getEmpleadoId(), t.getCostoHora()
+                                t.getProyecto().getId(), t.getEmpleado().getId(), t.getCostoHora()
                         });
                     }
                 } catch (Exception ex) {
@@ -141,7 +141,6 @@ public class TareaPanel extends JPanel {
 
         JTextField proyectoTxt = new JTextField();
         JTextField empleadoTxt = new JTextField();
-        JTextField costoTxt    = new JTextField();
         JTextArea histArea = new JTextArea();
         histArea.setEditable(false);
 
@@ -157,9 +156,8 @@ public class TareaPanel extends JPanel {
             if (existente.getEstado() != null)
                 estadoBox.setSelectedItem(existente.getEstado());
 
-            proyectoTxt.setText(String.valueOf(existente.getProyectoId()));
-            empleadoTxt.setText(String.valueOf(existente.getEmpleadoId()));
-            costoTxt.setText(String.valueOf(existente.getCostoHora()));
+            proyectoTxt.setText(String.valueOf(existente.getProyecto().getId()));
+            empleadoTxt.setText(String.valueOf(existente.getEmpleado().getId()));
             try {
                 java.util.List<model.HistorialEstado> hs = service.historial(existente.getId());
                 for(model.HistorialEstado h: hs){
@@ -178,7 +176,6 @@ public class TareaPanel extends JPanel {
 
         form.add(new JLabel("Proyecto ID:"));    form.add(proyectoTxt);
         form.add(new JLabel("Empleado ID:"));    form.add(empleadoTxt);
-        form.add(new JLabel("Costo Hora:"));     form.add(costoTxt);
         form.add(new JLabel("Estado:"));         form.add(estadoBox);
         form.add(new JLabel("Historial:"));      form.add(new JScrollPane(histArea));
 
@@ -199,13 +196,12 @@ public class TareaPanel extends JPanel {
 
                 int proyecto  = Integer.parseInt(proyectoTxt.getText());
                 int empleado  = Integer.parseInt(empleadoTxt.getText());
-                int costo     = Integer.parseInt(costoTxt.getText());
 
                 if (existente == null) {
-                    service.alta(titulo, desc, est, real, inicio, fin, estado, proyecto, empleado, costo);
+                    service.alta(titulo, desc, est, real, inicio, fin, estado, proyecto, empleado);
                 } else {
                     service.modificar(existente.getId(), titulo, desc, est, real,
-                                      inicio, fin, estado, proyecto, empleado, costo);
+                                      inicio, fin, estado, proyecto, empleado);
                 }
                 refrescarTabla();
 

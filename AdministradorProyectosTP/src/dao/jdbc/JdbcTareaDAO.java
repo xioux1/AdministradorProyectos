@@ -2,7 +2,11 @@ package dao.jdbc;
 
 import dao.DAOException;
 import dao.TareaDAO;
+import dao.ProyectoDAO;
+import dao.EmpleadoDAO;
 import model.Tarea;
+import model.Proyecto;
+import model.Empleado;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,9 +16,13 @@ import java.util.Optional;
 public class JdbcTareaDAO implements TareaDAO {
 
     private final Connection conn;
+    private final ProyectoDAO proyectoDao;
+    private final EmpleadoDAO empleadoDao;
 
-    public JdbcTareaDAO(Connection conn) throws DAOException {
+    public JdbcTareaDAO(Connection conn, ProyectoDAO proyectoDao, EmpleadoDAO empleadoDao) throws DAOException {
         this.conn = conn;
+        this.proyectoDao = proyectoDao;
+        this.empleadoDao = empleadoDao;
         try {
             crearTablaSiNoExiste();
         } catch (SQLException e) {
@@ -40,8 +48,8 @@ public class JdbcTareaDAO implements TareaDAO {
             else
                 ps.setNull(6, Types.DATE);
             ps.setString(7, t.getEstado() != null ? t.getEstado().name() : null);
-            ps.setInt(8, t.getProyectoId());
-            ps.setInt(9, t.getEmpleadoId());
+            ps.setInt(8, t.getProyecto().getId());
+            ps.setInt(9, t.getEmpleado().getId());
             ps.setInt(10, t.getCostoHora());
             ps.executeUpdate();
 
@@ -72,8 +80,8 @@ public class JdbcTareaDAO implements TareaDAO {
             else
                 ps.setNull(6, Types.DATE);
             ps.setString(7, t.getEstado() != null ? t.getEstado().name() : null);
-            ps.setInt(8, t.getProyectoId());
-            ps.setInt(9, t.getEmpleadoId());
+            ps.setInt(8, t.getProyecto().getId());
+            ps.setInt(9, t.getEmpleado().getId());
             ps.setInt(10, t.getCostoHora());
             ps.setInt(11, t.getId());
             ps.executeUpdate();
@@ -155,6 +163,20 @@ public class JdbcTareaDAO implements TareaDAO {
     }
 
     private Tarea mapRow(ResultSet rs) throws SQLException {
+        int proyectoId = rs.getInt("proyecto_id");
+        int empleadoId = rs.getInt("empleado_id");
+
+        Proyecto proyecto;
+        Empleado empleado;
+        try {
+            proyecto = proyectoDao.obtenerPorId(proyectoId)
+                    .orElse(new Proyecto(proyectoId, ""));
+            empleado = empleadoDao.obtenerPorId(empleadoId)
+                    .orElse(new Empleado(empleadoId, "", rs.getInt("costo_hora")));
+        } catch (DAOException e) {
+            throw new SQLException("Error obteniendo referencias", e);
+        }
+
         return new Tarea(
                 rs.getInt("id"),
                 rs.getString("titulo"),
@@ -164,9 +186,8 @@ public class JdbcTareaDAO implements TareaDAO {
                 rs.getDate("inicio_sprint") != null ? rs.getDate("inicio_sprint").toLocalDate() : null,
                 rs.getDate("fin_sprint") != null ? rs.getDate("fin_sprint").toLocalDate() : null,
                 rs.getString("estado") != null ? model.EstadoTarea.valueOf(rs.getString("estado")) : null,
-                rs.getInt("proyecto_id"),
-                rs.getInt("empleado_id"),
-                rs.getInt("costo_hora")
+                proyecto,
+                empleado
         );
     }
 }
