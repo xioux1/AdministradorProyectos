@@ -16,7 +16,7 @@ Arquitectura en tres capas: UI → Service → DAO
 
 Persistencia JDBC sobre H2
 
-Manejo de excepciones: ValidacionException y DataAccessException
+Manejo de excepciones: ValidacionException y DAOException
 
 Swing hecho a mano
 
