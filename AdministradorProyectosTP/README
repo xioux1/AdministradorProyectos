@@ -1,0 +1,42 @@
+Administración de Tareas – 1ª Entrega
+
+Tema elegido: Administración de proyectos (Tema 7)
+
+Alcance de esta entrega:
+
+CRUD completo de Tarea (alta, baja, modificación, consulta, listado)
+
+Arquitectura en tres capas: UI → Service → DAO
+
+Persistencia JDBC sobre H2
+
+Manejo de excepciones: ValidacionException y DataAccessException
+
+Swing hecho a mano
+
+Estructura del proyecto (carpetas principales):
+src/ui   – pantallas Swing
+src/service – lógica y validación
+src/dao – acceso a datos (in‑memory y JDBC)
+src/model – POJOs
+a.sql/schema.sql – script de tabla tarea
+
+Cómo ejecutar:
+
+mvn clean package
+
+java -jar target/adm-tareas-1.0.jar
+(se necesita JDK 17 o superior)
+La aplicación crea automáticamente la base de datos "tareas.db" la primera vez.
+
+Próximos pasos para la 2ª entrega:
+
+CRUD de Proyecto y Empleado
+
+Asignación empleado ↔ proyecto
+
+Reportes de costo (horas × tarifa)
+
+Historial de estados de tarea
+
+Pool de empleados libres y tablero kanban (bonus)

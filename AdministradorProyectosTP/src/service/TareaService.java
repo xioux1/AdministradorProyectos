@@ -1,0 +1,18 @@
+package service;
+
+import model.Tarea;
+import validacion.ValidacionException;
+import java.util.List;
+
+public interface TareaService {
+
+    void alta(String titulo, String desc, int hEst, int hReal)
+            throws ValidacionException, ServiceException;
+
+    void modificar(int id, String titulo, String desc, int hEst, int hReal)
+            throws ValidacionException, ServiceException;
+
+    void baja(int id)                      throws ServiceException;
+    List<Tarea> listado()                  throws ServiceException;
+    Tarea consulta(int id)                 throws ServiceException;
+}
