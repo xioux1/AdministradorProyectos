@@ -6,10 +6,12 @@ import java.util.List;
 
 public interface TareaService {
 
-    void alta(String titulo, String desc, int hEst, int hReal)
+    void alta(String titulo, String desc, int hEst, int hReal,
+              int proyectoId, int empleadoId, int costoHora)
             throws ValidacionException, ServiceException;
 
-    void modificar(int id, String titulo, String desc, int hEst, int hReal)
+    void modificar(int id, String titulo, String desc, int hEst, int hReal,
+                   int proyectoId, int empleadoId, int costoHora)
             throws ValidacionException, ServiceException;
 
     void baja(int id)                      throws ServiceException;

@@ -19,24 +19,28 @@ public class TareaServiceImpl implements TareaService {
     // ------------------------------------ CRUD
 
     @Override
-    public void alta(String titulo, String desc, int hEst, int hReal)
+    public void alta(String titulo, String desc, int hEst, int hReal,
+                     int proyectoId, int empleadoId, int costoHora)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
-            dao.crear(new Tarea(titulo, desc, hEst, hReal));
+            dao.crear(new Tarea(titulo, desc, hEst, hReal,
+                                proyectoId, empleadoId, costoHora));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo guardar la tarea", ex);
         }
     }
 
     @Override
-    public void modificar(int id, String titulo, String desc, int hEst, int hReal)
+    public void modificar(int id, String titulo, String desc, int hEst, int hReal,
+                          int proyectoId, int empleadoId, int costoHora)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
-            dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal));
+            dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal,
+                                     proyectoId, empleadoId, costoHora));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo actualizar la tarea", ex);
         }
