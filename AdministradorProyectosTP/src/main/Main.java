@@ -4,18 +4,14 @@ import app.AppManager;
 import dao.TareaDAO;
 import dao.ProyectoDAO;
 import dao.EmpleadoDAO;
-import dao.jdbc.JdbcTareaDAO;
-import dao.jdbc.JdbcProyectoDAO;
-import dao.jdbc.JdbcEmpleadoDAO;
+import dao.jdbc.*;
+import dao.HistorialDAO;
+import dao.AsignacionDAO;
 import service.TareaService;
 import service.ProyectoService;
 import service.EmpleadoService;
-import service.TareaServiceImpl;
-import service.ProyectoServiceImpl;
-import service.EmpleadoServiceImpl;
-import ui.TareaPanel;
-import ui.ProyectoPanel;
-import ui.EmpleadoPanel;
+import service.*;
+import ui.*;
 
 import javax.swing.SwingUtilities;
 import java.sql.Connection;
@@ -29,15 +25,20 @@ public class Main {
         TareaDAO tareaDao      = new JdbcTareaDAO(c);
         ProyectoDAO proyectoDao = new JdbcProyectoDAO(c);
         EmpleadoDAO empleadoDao = new JdbcEmpleadoDAO(c);
+        HistorialDAO histDao    = new JdbcHistorialDAO(c);
+        AsignacionDAO asigDao   = new JdbcAsignacionDAO(c);
 
-        TareaService tareaSvc      = new TareaServiceImpl(tareaDao);
+        TareaService tareaSvc      = new TareaServiceImpl(tareaDao, histDao);
         ProyectoService projSvc    = new ProyectoServiceImpl(proyectoDao);
         EmpleadoService empSvc     = new EmpleadoServiceImpl(empleadoDao);
+        AsignacionService asigSvc  = new AsignacionServiceImpl(asigDao, empleadoDao);
+        ReporteService repSvc      = new ReporteServiceImpl(tareaDao);
 
         AppManager  mgr   = new AppManager();
+        mgr.initPanels(tareaSvc, projSvc, empSvc, repSvc);
 
         SwingUtilities.invokeLater(() ->
-            mgr.mostrar(new TareaPanel(mgr, tareaSvc))
+            mgr.mostrar(mgr.getMenuPanel())
         );
         mgr.start();
     }

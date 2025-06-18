@@ -36,7 +36,7 @@ public class ProyectoPanel extends JPanel {
                 "Agregar","Eliminar","Volver",
                 e->abrirFormulario(null),
                 e->eliminarSeleccionada(),
-                e->manager.mostrar(this)
+                e->manager.mostrar(manager.getMenuPanel())
         );
         add(botones, BorderLayout.SOUTH);
 

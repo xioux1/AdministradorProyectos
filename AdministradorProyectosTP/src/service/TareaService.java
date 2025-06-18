@@ -23,4 +23,5 @@ public interface TareaService {
     void baja(int id) throws ServiceException;
     List<Tarea> listado() throws ServiceException;
     Tarea consulta(int id) throws ServiceException;
+    java.util.List<model.HistorialEstado> historial(int tareaId) throws ServiceException;
 }
