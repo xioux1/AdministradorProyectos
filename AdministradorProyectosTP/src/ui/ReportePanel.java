@@ -17,7 +17,7 @@ public class ReportePanel extends JPanel {
         JTable tabla = new JTable(modelo);
         add(new JScrollPane(tabla), BorderLayout.CENTER);
         JButton volver = new JButton("Volver");
-        volver.addActionListener(e->manager.mostrar(new MenuPanel(manager)));
+        volver.addActionListener(e -> manager.mostrar(manager.getMenuPanel()));
         add(volver, BorderLayout.SOUTH);
 
         new SwingWorker<List<service.ReporteService.CostoProyecto>,Void>(){
