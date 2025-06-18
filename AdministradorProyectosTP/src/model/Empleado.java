@@ -23,4 +23,7 @@ public class Empleado {
 
     public int getCostoHora() { return costoHora; }
     public void setCostoHora(int costoHora) { this.costoHora = costoHora; }
+
+    @Override
+    public String toString() { return nombre; }
 }
