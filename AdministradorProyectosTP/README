@@ -40,14 +40,7 @@ Reemplazá `<ruta-h2.jar>` por la ubicación del driver JDBC de H2.
 Se necesita JDK 17 o superior. La aplicación crea automáticamente la base de datos
 "tareas.db" la primera vez.
 
-Próximos pasos para la 2ª entrega:
 
-CRUD de Proyecto y Empleado
+Resumen de funcionalidades implementadas:
 
-Asignación empleado ↔ proyecto
-
-Reportes de costo (horas × tarifa)
-
-Historial de estados de tarea
-
-Pool de empleados libres y tablero kanban (bonus)
+Esta versión incluye la gestión de tareas, proyectos y empleados. Cada tarea se registra con fechas de sprint, se vincula a un proyecto y responsable con costo por hora y puede moverse entre estados desde el tablero Kanban. Los datos se validan y se persisten en H2 mediante JDBC.
