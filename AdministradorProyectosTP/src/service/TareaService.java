@@ -7,12 +7,24 @@ import java.util.List;
 public interface TareaService {
 
     void alta(String titulo, String desc, int hEst, int hReal,
+
+              java.time.LocalDate inicio, java.time.LocalDate fin,
+              model.EstadoTarea estado)
+            throws ValidacionException, ServiceException;
+
+    void modificar(int id, String titulo, String desc, int hEst, int hReal,
+                   java.time.LocalDate inicio, java.time.LocalDate fin,
+                   model.EstadoTarea estado)
+
               int proyectoId, int empleadoId, int costoHora)
             throws ValidacionException, ServiceException;
 
     void modificar(int id, String titulo, String desc, int hEst, int hReal,
                    int proyectoId, int empleadoId, int costoHora)
+        main
             throws ValidacionException, ServiceException;
+
+    void cambiarEstado(int id, model.EstadoTarea estado) throws ServiceException;
 
     void baja(int id)                      throws ServiceException;
     List<Tarea> listado()                  throws ServiceException;
