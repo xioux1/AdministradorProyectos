@@ -59,4 +59,13 @@ public final class InMemoryTareaDAO implements TareaDAO {
             throw new DAOException("Error al buscar tarea en memoria", e);
         }
     }
+
+    @Override
+    public void actualizarEstado(int id, model.EstadoTarea estado) throws DAOException {
+        try {
+            tareas.forEach(t -> { if (t.getId() == id) t.setEstado(estado); });
+        } catch (Exception e) {
+            throw new DAOException("Error al cambiar estado en memoria", e);
+        }
+    }
 }

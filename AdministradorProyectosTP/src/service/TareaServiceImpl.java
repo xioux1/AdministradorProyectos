@@ -19,26 +19,39 @@ public class TareaServiceImpl implements TareaService {
     // ------------------------------------ CRUD
 
     @Override
-    public void alta(String titulo, String desc, int hEst, int hReal)
+    public void alta(String titulo, String desc, int hEst, int hReal,
+                     java.time.LocalDate inicio, java.time.LocalDate fin,
+                     model.EstadoTarea estado)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
-            dao.crear(new Tarea(titulo, desc, hEst, hReal));
+            dao.crear(new Tarea(0, titulo, desc, hEst, hReal, inicio, fin, estado));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo guardar la tarea", ex);
         }
     }
 
     @Override
-    public void modificar(int id, String titulo, String desc, int hEst, int hReal)
+    public void modificar(int id, String titulo, String desc, int hEst, int hReal,
+                          java.time.LocalDate inicio, java.time.LocalDate fin,
+                          model.EstadoTarea estado)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
-            dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal));
+            dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal, inicio, fin, estado));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo actualizar la tarea", ex);
+        }
+    }
+
+    @Override
+    public void cambiarEstado(int id, model.EstadoTarea estado) throws ServiceException {
+        try {
+            dao.actualizarEstado(id, estado);
+        } catch (DAOException ex) {
+            throw new ServiceException("No se pudo cambiar el estado", ex);
         }
     }
 
