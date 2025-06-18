@@ -22,13 +22,13 @@ public class Main {
         Connection c = DriverManager.getConnection(
                 "jdbc:h2:file:./tareas", "sa", "");
 
-        TareaDAO tareaDao      = new JdbcTareaDAO(c);
         ProyectoDAO proyectoDao = new JdbcProyectoDAO(c);
         EmpleadoDAO empleadoDao = new JdbcEmpleadoDAO(c);
+        TareaDAO tareaDao      = new JdbcTareaDAO(c, proyectoDao, empleadoDao);
         HistorialDAO histDao    = new JdbcHistorialDAO(c);
         AsignacionDAO asigDao   = new JdbcAsignacionDAO(c);
 
-        TareaService tareaSvc      = new TareaServiceImpl(tareaDao, histDao);
+        TareaService tareaSvc      = new TareaServiceImpl(tareaDao, histDao, proyectoDao, empleadoDao);
         ProyectoService projSvc    = new ProyectoServiceImpl(proyectoDao);
         EmpleadoService empSvc     = new EmpleadoServiceImpl(empleadoDao);
         AsignacionService asigSvc  = new AsignacionServiceImpl(asigDao, empleadoDao);
