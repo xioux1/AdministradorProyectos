@@ -29,11 +29,17 @@ a.sql/schema.sql – script de tabla tarea
 
 Cómo ejecutar:
 
-mvn clean package
+Compilá todas las clases con `javac` y ejecutá la clase `main.Main`.
+Por ejemplo:
 
-java -jar target/adm-tareas-1.0.jar
-(se necesita JDK 17 o superior)
-La aplicación crea automáticamente la base de datos "tareas.db" la primera vez.
+```
+javac -d bin $(find src -name "*.java")
+java -cp bin:<ruta-h2.jar> main.Main
+```
+
+Reemplazá `<ruta-h2.jar>` por la ubicación del driver JDBC de H2.
+Se necesita JDK 17 o superior. La aplicación crea automáticamente la base de datos
+"tareas.db" la primera vez.
 
 Próximos pasos para la 2ª entrega:
 

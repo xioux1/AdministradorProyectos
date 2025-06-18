@@ -6,6 +6,7 @@ import model.Tarea;
 import validacion.ValidacionException;
 import validacion.ValidadorDeErrores;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class TareaServiceImpl implements TareaService {
@@ -20,21 +21,15 @@ public class TareaServiceImpl implements TareaService {
 
     @Override
     public void alta(String titulo, String desc, int hEst, int hReal,
-
-                     java.time.LocalDate inicio, java.time.LocalDate fin,
-
+                     LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
                      int proyectoId, int empleadoId, int costoHora)
-     main
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
-
-            dao.crear(new Tarea(0, titulo, desc, hEst, hReal, inicio, fin, estado));
-
-            dao.crear(new Tarea(titulo, desc, hEst, hReal,
+            dao.crear(new Tarea(0, titulo, desc, hEst, hReal,
+                                inicio, fin, estado,
                                 proyectoId, empleadoId, costoHora));
-        main
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo guardar la tarea", ex);
         }
@@ -42,21 +37,15 @@ public class TareaServiceImpl implements TareaService {
 
     @Override
     public void modificar(int id, String titulo, String desc, int hEst, int hReal,
-
-                          java.time.LocalDate inicio, java.time.LocalDate fin,
-                          model.EstadoTarea estado)
-
+                          LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
                           int proyectoId, int empleadoId, int costoHora)
-     main
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
-        try  
-            dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal, inicio, fin, estado));
-
+        try {
             dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal,
+                                     inicio, fin, estado,
                                      proyectoId, empleadoId, costoHora));
-      main
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo actualizar la tarea", ex);
         }

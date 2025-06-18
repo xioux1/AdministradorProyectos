@@ -2,31 +2,25 @@ package service;
 
 import model.Tarea;
 import validacion.ValidacionException;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TareaService {
 
     void alta(String titulo, String desc, int hEst, int hReal,
-
-              java.time.LocalDate inicio, java.time.LocalDate fin,
-              model.EstadoTarea estado)
-            throws ValidacionException, ServiceException;
-
-    void modificar(int id, String titulo, String desc, int hEst, int hReal,
-                   java.time.LocalDate inicio, java.time.LocalDate fin,
-                   model.EstadoTarea estado)
-
+              LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
               int proyectoId, int empleadoId, int costoHora)
             throws ValidacionException, ServiceException;
 
     void modificar(int id, String titulo, String desc, int hEst, int hReal,
+                   LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
                    int proyectoId, int empleadoId, int costoHora)
-        main
             throws ValidacionException, ServiceException;
 
     void cambiarEstado(int id, model.EstadoTarea estado) throws ServiceException;
 
-    void baja(int id)                      throws ServiceException;
-    List<Tarea> listado()                  throws ServiceException;
-    Tarea consulta(int id)                 throws ServiceException;
+    void baja(int id) throws ServiceException;
+    List<Tarea> listado() throws ServiceException;
+    Tarea consulta(int id) throws ServiceException;
 }
