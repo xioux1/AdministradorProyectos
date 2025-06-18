@@ -21,18 +21,16 @@ public class JdbcTareaDAO implements TareaDAO {
             throw new DAOException("Error al inicializar la tabla «tarea»", e);
         }
     }
+
     @Override
     public void crear(Tarea t) throws DAOException {
-       klh9ts-codex/add-sprint-dates-and-kanban-board
-        String sql = "INSERT INTO tarea(titulo, descripcion, horas_est, horas_real, inicio_sprint, fin_sprint, estado) " +
- main
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tarea(titulo, descripcion, horas_est, horas_real, inicio_sprint, fin_sprint, estado, proyecto_id, empleado_id, costo_hora) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, t.getTitulo());
             ps.setString(2, t.getDescripcion());
             ps.setInt(3, t.getHorasEstimadas());
             ps.setInt(4, t.getHorasReales());
-            klh9ts-codex/add-sprint-dates-and-kanban-board
             if (t.getInicioSprint() != null)
                 ps.setDate(5, Date.valueOf(t.getInicioSprint()));
             else
@@ -42,11 +40,9 @@ public class JdbcTareaDAO implements TareaDAO {
             else
                 ps.setNull(6, Types.DATE);
             ps.setString(7, t.getEstado() != null ? t.getEstado().name() : null);
-
-            ps.setInt(5, t.getProyectoId());
-            ps.setInt(6, t.getEmpleadoId());
-            ps.setInt(7, t.getCostoHora());
-            main
+            ps.setInt(8, t.getProyectoId());
+            ps.setInt(9, t.getEmpleadoId());
+            ps.setInt(10, t.getCostoHora());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -61,18 +57,12 @@ public class JdbcTareaDAO implements TareaDAO {
 
     @Override
     public void actualizar(Tarea t) throws DAOException {
-        String sql = "UPDATE tarea SET titulo=?, descripcion=?, horas_est=?, horas_real=?, " +
-    klh9ts-codex/add-sprint-dates-and-kanban-board
-                     "inicio_sprint=?, fin_sprint=?, estado=? WHERE id=?";
-
-                     "proyecto_id=?, empleado_id=?, costo_hora=? WHERE id=?";
-        main
+        String sql = "UPDATE tarea SET titulo=?, descripcion=?, horas_est=?, horas_real=?, inicio_sprint=?, fin_sprint=?, estado=?, proyecto_id=?, empleado_id=?, costo_hora=? WHERE id=?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, t.getTitulo());
             ps.setString(2, t.getDescripcion());
             ps.setInt(3, t.getHorasEstimadas());
             ps.setInt(4, t.getHorasReales());
-        klh9ts-codex/add-sprint-dates-and-kanban-board
             if (t.getInicioSprint() != null)
                 ps.setDate(5, Date.valueOf(t.getInicioSprint()));
             else
@@ -82,12 +72,10 @@ public class JdbcTareaDAO implements TareaDAO {
             else
                 ps.setNull(6, Types.DATE);
             ps.setString(7, t.getEstado() != null ? t.getEstado().name() : null);
-
-            ps.setInt(5, t.getProyectoId());
-            ps.setInt(6, t.getEmpleadoId());
-            ps.setInt(7, t.getCostoHora());
-         main
-            ps.setInt(8, t.getId());
+            ps.setInt(8, t.getProyectoId());
+            ps.setInt(9, t.getEmpleadoId());
+            ps.setInt(10, t.getCostoHora());
+            ps.setInt(11, t.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException("Error al actualizar tarea", e);
@@ -153,15 +141,12 @@ public class JdbcTareaDAO implements TareaDAO {
                 descripcion VARCHAR(1024),
                 horas_est INT,
                 horas_real INT,
-     klh9ts-codex/add-sprint-dates-and-kanban-board
                 inicio_sprint DATE,
                 fin_sprint DATE,
-                estado VARCHAR(20)
-
+                estado VARCHAR(20),
                 proyecto_id INT,
                 empleado_id INT,
                 costo_hora INT
-      main
             )
         """;
         try (Statement st = conn.createStatement()) {
@@ -176,15 +161,12 @@ public class JdbcTareaDAO implements TareaDAO {
                 rs.getString("descripcion"),
                 rs.getInt("horas_est"),
                 rs.getInt("horas_real"),
-    klh9ts-codex/add-sprint-dates-and-kanban-board
                 rs.getDate("inicio_sprint") != null ? rs.getDate("inicio_sprint").toLocalDate() : null,
                 rs.getDate("fin_sprint") != null ? rs.getDate("fin_sprint").toLocalDate() : null,
-                rs.getString("estado") != null ? model.EstadoTarea.valueOf(rs.getString("estado")) : null
-
+                rs.getString("estado") != null ? model.EstadoTarea.valueOf(rs.getString("estado")) : null,
                 rs.getInt("proyecto_id"),
                 rs.getInt("empleado_id"),
                 rs.getInt("costo_hora")
-     main
         );
     }
 }
