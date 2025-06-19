@@ -7,6 +7,7 @@ import service.ServiceException;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import ui.Dialogs;
 
 public class KanbanPanel extends JPanel {
     private final AppManager manager;
@@ -59,7 +60,7 @@ public class KanbanPanel extends JPanel {
             service.cambiarEstado(t.getId(), nuevo);
             cargarDatos();
         } catch (ServiceException ex) {
-            JOptionPane.showMessageDialog(this, "No se pudo mover la tarea", "Error", JOptionPane.ERROR_MESSAGE);
+            Dialogs.error(this, "No se pudo mover la tarea");
         }
     }
 
@@ -75,7 +76,7 @@ public class KanbanPanel extends JPanel {
                 else doneModel.addElement(t);
             }
         } catch (ServiceException ex) {
-            JOptionPane.showMessageDialog(this, "No se pudo cargar el tablero", "Error", JOptionPane.ERROR_MESSAGE);
+            Dialogs.error(this, "No se pudo cargar el tablero");
         }
     }
 }

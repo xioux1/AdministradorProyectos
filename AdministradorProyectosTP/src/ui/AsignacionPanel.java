@@ -8,6 +8,7 @@ import service.ServiceException;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import ui.Dialogs;
 
 public class AsignacionPanel extends JPanel {
     private final AppManager manager;
@@ -70,7 +71,7 @@ public class AsignacionPanel extends JPanel {
                     for(model.Proyecto p:ps) proyectoBox.addItem(p);
                     if(proyectoBox.getItemCount()>0) proyectoBox.setSelectedIndex(0);
                     cargarListas();
-                }catch(Exception ex){JOptionPane.showMessageDialog(AsignacionPanel.this,"No se pudo cargar proyectos","Error",JOptionPane.ERROR_MESSAGE);}
+                }catch(Exception ex){Dialogs.error(AsignacionPanel.this,"No se pudo cargar proyectos");}
             }
         }.execute();
     }
@@ -93,23 +94,23 @@ public class AsignacionPanel extends JPanel {
                     libresModel.clear();
                     for(model.Empleado e:asignados) asignadosModel.addElement(e);
                     for(model.Empleado e:libres) libresModel.addElement(e);
-                }catch(Exception ex){JOptionPane.showMessageDialog(AsignacionPanel.this,"No se pudo cargar empleados","Error",JOptionPane.ERROR_MESSAGE);} }
+                }catch(Exception ex){Dialogs.error(AsignacionPanel.this,"No se pudo cargar empleados");} }
         }.execute();
     }
 
     private void asignarEmpleado(){
         model.Proyecto p=(model.Proyecto) proyectoBox.getSelectedItem();
         model.Empleado emp=libresList.getSelectedValue();
-        if(p==null || emp==null){JOptionPane.showMessageDialog(this,"Seleccioná un empleado libre","Aviso",JOptionPane.WARNING_MESSAGE);return;}
+        if(p==null || emp==null){Dialogs.warn(this,"Seleccioná un empleado libre");return;}
         try{service.asignar(emp.getId(),p.getId());cargarListas();}
-        catch(ServiceException e){JOptionPane.showMessageDialog(this,"No se pudo asignar","Error",JOptionPane.ERROR_MESSAGE);}
+        catch(ServiceException e){Dialogs.error(this,"No se pudo asignar");}
     }
 
     private void desasignarEmpleado(){
         model.Proyecto p=(model.Proyecto) proyectoBox.getSelectedItem();
         model.Empleado emp=asignadosList.getSelectedValue();
-        if(p==null || emp==null){JOptionPane.showMessageDialog(this,"Seleccioná un empleado asignado","Aviso",JOptionPane.WARNING_MESSAGE);return;}
+        if(p==null || emp==null){Dialogs.warn(this,"Seleccioná un empleado asignado");return;}
         try{service.desasignar(emp.getId(),p.getId());cargarListas();}
-        catch(ServiceException e){JOptionPane.showMessageDialog(this,"No se pudo desasignar","Error",JOptionPane.ERROR_MESSAGE);}
+        catch(ServiceException e){Dialogs.error(this,"No se pudo desasignar");}
     }
 }

@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import ui.Dialogs;
 
 public class ReportePanel extends JPanel {
     public ReportePanel(AppManager manager, ReporteService service) {
@@ -29,7 +30,7 @@ public class ReportePanel extends JPanel {
                     for(service.ReporteService.CostoProyecto c:datos){
                         modelo.addRow(new Object[]{c.proyectoId,c.horas,c.costo});
                     }
-                }catch(Exception ex){JOptionPane.showMessageDialog(ReportePanel.this,"No se pudo cargar","Error",JOptionPane.ERROR_MESSAGE);} }
+                }catch(Exception ex){Dialogs.error(ReportePanel.this,"No se pudo cargar");} }
         }.execute();
     }
 }
