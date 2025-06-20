@@ -4,7 +4,9 @@ import app.AppManager;
 import service.EmpleadoService;
 import service.ServiceException;
 import ui.componentes.BotoneraPanel;
-import ui.componentes.FormBuilder;
+import ui.form.AbstractFormPanel;
+import ui.form.CamposEmpleadoPanel;
+import ui.form.CamposPanel;
 import validacion.ValidacionException;
 
 import javax.swing.*;
@@ -57,25 +59,46 @@ public class EmpleadoPanel extends AbstractCrudPanel<model.Empleado> {
 
     @Override
     protected void abrirFormulario(model.Empleado existente){
-        JTextField nombreTxt=new JTextField();
-        JTextField costoTxt=new JTextField();
-        if(existente!=null){
-            nombreTxt.setText(existente.getNombre());
-            costoTxt.setText(String.valueOf(existente.getCostoHora()));
-        }
-        JPanel form=new FormBuilder()
-                .add("Nombre:", nombreTxt)
-                .add("Costo Hora:", costoTxt)
-                .build();
+        manager.mostrar(new EmpleadoForm(existente));
+    }
 
-        int res=JOptionPane.showConfirmDialog(this,form,existente==null?"Agregar empleado":"Editar empleado",JOptionPane.OK_CANCEL_OPTION);
-        if(res==JOptionPane.OK_OPTION){
+    private class EmpleadoForm extends AbstractFormPanel {
+        private final model.Empleado existente;
+        private CamposEmpleadoPanel campos;
+
+        EmpleadoForm(model.Empleado existente){
+            super(EmpleadoPanel.this.manager, EmpleadoPanel.this);
+            this.existente = existente;
+        }
+
+        @Override
+        protected CamposPanel setCamposPanel(){
+            campos = new CamposEmpleadoPanel(existente);
+            return campos;
+        }
+
+        @Override
+        protected void onOk(){
             try{
-                String nombre=nombreTxt.getText();
-                int costo=Integer.parseInt(costoTxt.getText());
-                if(existente==null){service.alta(nombre,costo);}else{service.modificar(existente.getId(),nombre,costo);}refrescarTabla();
-            }catch(ValidacionException ve){Dialogs.warn(this,ve.getMessage());}
-            catch(ServiceException se){Dialogs.error(this,"No se pudo guardar.");}
+                String nombre = campos.getNombre();
+                int costo = campos.getCostoHora();
+                if(existente==null){
+                    service.alta(nombre, costo);
+                }else{
+                    service.modificar(existente.getId(), nombre, costo);
+                }
+                refrescarTabla();
+                manager.mostrar(EmpleadoPanel.this);
+            }catch(ValidacionException ve){
+                Dialogs.warn(this, ve.getMessage());
+            }catch(ServiceException se){
+                Dialogs.error(this,"No se pudo guardar.");
+            }
+        }
+
+        @Override
+        protected void onCancel(){
+            manager.mostrar(EmpleadoPanel.this);
         }
     }
 }

@@ -4,7 +4,9 @@ import app.AppManager;
 import service.TareaService;
 import service.ServiceException;
 import ui.componentes.BotoneraPanel;
-import ui.componentes.FormBuilder;
+import ui.form.AbstractFormPanel;
+import ui.form.CamposTareaPanel;
+import ui.form.CamposPanel;
 import validacion.ValidacionException;
 
 import javax.swing.*;
@@ -71,73 +73,41 @@ public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
 
     @Override
     protected void abrirFormulario(model.Tarea existente) {
-        JTextField tituloTxt = new JTextField();
-        JTextField descTxt   = new JTextField();
-        JTextField estTxt    = new JTextField();
-        JTextField realTxt   = new JTextField();
+        manager.mostrar(new TareaForm(existente));
+    }
 
-        JTextField inicioTxt = new JTextField();
-        JTextField finTxt    = new JTextField();
-        JComboBox<model.EstadoTarea> estadoBox = new JComboBox<>(model.EstadoTarea.values());
+    private class TareaForm extends AbstractFormPanel {
+        private final model.Tarea existente;
+        private CamposTareaPanel campos;
 
-        JTextField proyectoTxt = new JTextField();
-        JTextField empleadoTxt = new JTextField();
-        JTextArea histArea = new JTextArea();
-        histArea.setEditable(false);
-
-        if (existente != null) {
-            tituloTxt.setText(existente.getTitulo());
-            descTxt.setText(existente.getDescripcion());
-            estTxt.setText(String.valueOf(existente.getHorasEstimadas()));
-            realTxt.setText(String.valueOf(existente.getHorasReales()));
-            if (existente.getInicioSprint() != null)
-                inicioTxt.setText(existente.getInicioSprint().toString());
-            if (existente.getFinSprint() != null)
-                finTxt.setText(existente.getFinSprint().toString());
-            if (existente.getEstado() != null)
-                estadoBox.setSelectedItem(existente.getEstado());
-
-            proyectoTxt.setText(String.valueOf(existente.getProyecto().getId()));
-            empleadoTxt.setText(String.valueOf(existente.getEmpleado().getId()));
-            try {
-                java.util.List<model.HistorialEstado> hs = service.historial(existente.getId());
-                for(model.HistorialEstado h: hs){
-                    histArea.append(h.getFecha()+" - "+h.getEstado()+" - "+h.getResponsable()+"\n");
-                }
-            } catch(ServiceException ignore) {}
+        TareaForm(model.Tarea existente) {
+            super(TareaPanel.this.manager, TareaPanel.this);
+            this.existente = existente;
         }
 
-        JPanel form = new FormBuilder()
-                .add("Título:", tituloTxt)
-                .add("Descripción:", descTxt)
-                .add("Horas Estimadas:", estTxt)
-                .add("Horas Reales:", realTxt)
-                .add("Inicio Sprint:", inicioTxt)
-                .add("Fin Sprint:", finTxt)
-                .add("Proyecto ID:", proyectoTxt)
-                .add("Empleado ID:", empleadoTxt)
-                .add("Estado:", estadoBox)
-                .add("Historial:", new JScrollPane(histArea))
-                .build();
+        @Override
+        protected CamposPanel setCamposPanel() {
+            java.util.List<model.HistorialEstado> hist = null;
+            if (existente != null) {
+                try { hist = service.historial(existente.getId()); }
+                catch(ServiceException ignore) {}
+            }
+            campos = new CamposTareaPanel(existente, hist);
+            return campos;
+        }
 
-        int res = JOptionPane.showConfirmDialog(
-                this, form,
-                existente == null ? "Agregar tarea" : "Editar tarea",
-                JOptionPane.OK_CANCEL_OPTION);
-
-        if (res == JOptionPane.OK_OPTION) {
+        @Override
+        protected void onOk() {
             try {
-                String titulo = tituloTxt.getText();
-                String desc   = descTxt.getText();
-                int est       = Integer.parseInt(estTxt.getText());
-                int real      = Integer.parseInt(realTxt.getText());
-                java.time.LocalDate inicio = inicioTxt.getText().isBlank() ? null : java.time.LocalDate.parse(inicioTxt.getText());
-                java.time.LocalDate fin    = finTxt.getText().isBlank() ? null : java.time.LocalDate.parse(finTxt.getText());
-                model.EstadoTarea estado   = (model.EstadoTarea) estadoBox.getSelectedItem();
-
-                int proyecto  = Integer.parseInt(proyectoTxt.getText());
-                int empleado  = Integer.parseInt(empleadoTxt.getText());
-
+                String titulo = campos.getTitulo();
+                String desc   = campos.getDescripcion();
+                int est       = campos.getHorasEstimadas();
+                int real      = campos.getHorasReales();
+                java.time.LocalDate inicio = campos.getInicioSprint();
+                java.time.LocalDate fin    = campos.getFinSprint();
+                model.EstadoTarea estado   = campos.getEstado();
+                int proyecto  = campos.getProyectoId();
+                int empleado  = campos.getEmpleadoId();
                 if (existente == null) {
                     service.alta(titulo, desc, est, real, inicio, fin, estado, proyecto, empleado);
                 } else {
@@ -145,16 +115,19 @@ public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
                                       inicio, fin, estado, proyecto, empleado);
                 }
                 refrescarTabla();
-
+                manager.mostrar(TareaPanel.this);
             } catch (NumberFormatException nfe) {
                 Dialogs.warn(this,"Las horas deben ser números enteros.");
-
             } catch (ValidacionException ve) {
-                Dialogs.warn(this,ve.getMessage());
-
+                Dialogs.warn(this, ve.getMessage());
             } catch (ServiceException se) {
                 Dialogs.error(this,"No pudimos guardar la tarea. Probá de nuevo.");
             }
+        }
+
+        @Override
+        protected void onCancel() {
+            manager.mostrar(TareaPanel.this);
         }
     }
 }
