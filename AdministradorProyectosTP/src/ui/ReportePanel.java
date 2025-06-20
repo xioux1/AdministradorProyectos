@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import ui.Dialogs;
+import ui.componentes.Dialogs;
 
 public class ReportePanel extends JPanel {
     public ReportePanel(AppManager manager, ReporteService service) {
