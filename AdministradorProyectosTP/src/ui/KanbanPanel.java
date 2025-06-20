@@ -28,7 +28,12 @@ public class KanbanPanel extends JPanel {
         add(board, BorderLayout.CENTER);
 
         JButton volver = new JButton("Volver");
-        volver.addActionListener(e -> manager.mostrar(new TareaPanel(manager, service)));
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                manager.mostrar(new TareaPanel(manager, service));
+            }
+        });
         add(volver, BorderLayout.SOUTH);
 
         cargarDatos();
