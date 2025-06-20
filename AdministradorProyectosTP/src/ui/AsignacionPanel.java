@@ -31,7 +31,12 @@ public class AsignacionPanel extends JPanel {
         JPanel top = new JPanel(new BorderLayout());
         top.add(new JLabel("Proyecto:"), BorderLayout.WEST);
         top.add(proyectoBox, BorderLayout.CENTER);
-        proyectoBox.addActionListener(e -> cargarListas());
+        proyectoBox.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                cargarListas();
+            }
+        });
         add(top, BorderLayout.NORTH);
 
         JPanel center = new JPanel(new GridLayout(1,2,10,10));
@@ -46,9 +51,24 @@ public class AsignacionPanel extends JPanel {
         south.add(asignar); south.add(desasignar); south.add(volver);
         add(south, BorderLayout.SOUTH);
 
-        asignar.addActionListener(e -> asignarEmpleado());
-        desasignar.addActionListener(e -> desasignarEmpleado());
-        volver.addActionListener(e -> manager.mostrar(manager.getMenuPanel()));
+        asignar.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                asignarEmpleado();
+            }
+        });
+        desasignar.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                desasignarEmpleado();
+            }
+        });
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                manager.mostrar(manager.getMenuPanel());
+            }
+        });
 
         cargarProyectos();
     }

@@ -31,7 +31,12 @@ public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
         JPanel south = new JPanel(new BorderLayout());
         south.add(botones, BorderLayout.CENTER);
         JButton volver = new JButton("Volver");
-        volver.addActionListener(e -> manager.mostrar(manager.getMenuPanel()));
+        volver.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                manager.mostrar(manager.getMenuPanel());
+            }
+        });
         south.add(volver, BorderLayout.EAST);
         add(south, BorderLayout.SOUTH);
 
