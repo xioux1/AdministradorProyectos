@@ -4,7 +4,9 @@ import app.AppManager;
 import service.ProyectoService;
 import service.ServiceException;
 import ui.componentes.BotoneraPanel;
-import ui.componentes.FormBuilder;
+import ui.form.AbstractFormPanel;
+import ui.form.CamposProyectoPanel;
+import ui.form.CamposPanel;
 import validacion.ValidacionException;
 
 import javax.swing.*;
@@ -58,19 +60,45 @@ public class ProyectoPanel extends AbstractCrudPanel<model.Proyecto> {
 
     @Override
     protected void abrirFormulario(model.Proyecto existente){
-        JTextField nombreTxt=new JTextField();
-        if(existente!=null){nombreTxt.setText(existente.getNombre());}
-        JPanel form=new FormBuilder()
-                .add("Nombre:", nombreTxt)
-                .build();
+        manager.mostrar(new ProyectoForm(existente));
+    }
 
-        int res=JOptionPane.showConfirmDialog(this,form,existente==null?"Agregar proyecto":"Editar proyecto",JOptionPane.OK_CANCEL_OPTION);
-        if(res==JOptionPane.OK_OPTION){
+    private class ProyectoForm extends AbstractFormPanel {
+        private final model.Proyecto existente;
+        private CamposProyectoPanel campos;
+
+        ProyectoForm(model.Proyecto existente){
+            super(ProyectoPanel.this.manager, ProyectoPanel.this);
+            this.existente = existente;
+        }
+
+        @Override
+        protected CamposPanel setCamposPanel(){
+            campos = new CamposProyectoPanel(existente);
+            return campos;
+        }
+
+        @Override
+        protected void onOk(){
             try{
-                String nombre=nombreTxt.getText();
-                if(existente==null){service.alta(nombre);}else{service.modificar(existente.getId(),nombre);}refrescarTabla();
-            }catch(ValidacionException ve){Dialogs.warn(this,ve.getMessage());}
-            catch(ServiceException se){Dialogs.error(this,"No se pudo guardar.");}
+                String nombre = campos.getNombre();
+                if(existente==null){
+                    service.alta(nombre);
+                }else{
+                    service.modificar(existente.getId(), nombre);
+                }
+                refrescarTabla();
+                manager.mostrar(ProyectoPanel.this);
+            }catch(ValidacionException ve){
+                Dialogs.warn(this, ve.getMessage());
+            }catch(ServiceException se){
+                Dialogs.error(this,"No se pudo guardar.");
+            }
+        }
+
+        @Override
+        protected void onCancel(){
+            manager.mostrar(ProyectoPanel.this);
         }
     }
 }
