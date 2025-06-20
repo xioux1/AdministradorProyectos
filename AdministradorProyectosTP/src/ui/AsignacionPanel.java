@@ -53,11 +53,11 @@ public class AsignacionPanel extends JPanel {
         cargarProyectos();
     }
 
-    private JScrollPane crearPanel(String titulo, JList<model.Empleado> list) {
+    private JPanel crearPanel(String titulo, JList<model.Empleado> list) {
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JLabel(titulo, SwingConstants.CENTER), BorderLayout.NORTH);
         p.add(new JScrollPane(list), BorderLayout.CENTER);
-        return new JScrollPane(p);
+        return p;
     }
 
     private void cargarProyectos() {
