@@ -3,6 +3,7 @@ package ui;
 import app.AppManager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import ui.componentes.Dialogs;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

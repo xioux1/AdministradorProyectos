@@ -8,6 +8,7 @@ import ui.form.AbstractFormPanel;
 import ui.form.CamposEmpleadoPanel;
 import ui.form.CamposPanel;
 import validacion.ValidacionException;
+import ui.componentes.Dialogs;
 
 import javax.swing.*;
 import java.awt.*;

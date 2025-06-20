@@ -8,7 +8,7 @@ import service.ServiceException;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import ui.Dialogs;
+import ui.componentes.Dialogs;
 
 public class AsignacionPanel extends JPanel {
     private final AppManager manager;
