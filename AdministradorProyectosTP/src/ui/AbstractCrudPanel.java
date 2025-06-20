@@ -20,6 +20,8 @@ public abstract class AbstractCrudPanel<T> extends JPanel {
             @Override public boolean isCellEditable(int r,int c){return false;}
         };
         tabla = new JTable(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        tabla.setFillsViewportHeight(true);
         add(new JScrollPane(tabla), BorderLayout.CENTER);
         tabla.addMouseListener(new MouseAdapter(){
             @Override public void mouseClicked(MouseEvent e){
