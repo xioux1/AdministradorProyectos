@@ -1,4 +1,4 @@
-Administración de Tareas – 1ª Entrega
+Administración de Tareas – Entrega final
 
 Tema elegido: Administración de proyectos (Tema 7)
 
@@ -44,3 +44,20 @@ Se necesita JDK 17 o superior. La aplicación crea automáticamente la base de 
 Resumen de funcionalidades implementadas:
 
 Esta versión incluye la gestión de tareas, proyectos y empleados. Cada tarea se registra con fechas de sprint, se vincula a un proyecto y responsable con costo por hora y puede moverse entre estados desde el tablero Kanban. Los datos se validan y se persisten en H2 mediante JDBC.
+
+## Consideraciones generales del Trabajo Práctico
+
+El desarrollo se planificó en dos etapas. En la **primera entrega** se realizó un
+alcance reducido para implementar un CRUD completo de una sola entidad con manejo
+de excepciones y pantallas Swing. Esta segunda etapa corresponde a la **entrega
+final**, en la que se completó el resto de las entidades y la funcionalidad
+solicitada.
+
+El lineamiento general fue diseñar entre cuatro y seis entidades manteniendo un
+fuerte énfasis en diseño orientado a objetos. No se evalúa el diseño de base de
+datos ni SQL, sino el nivel de cohesión, acoplamiento y reutilización de código.
+Las entregas deben defenderse explicando las decisiones de diseño tomadas.
+
+Cada trabajo práctico se aprueba con un mínimo de 4 puntos. La funcionalidad
+básica es obligatoria para aprobar, mientras que los adicionales y "bonus points"
+permiten mejorar la calificación si el desarrollo completo está presente.
