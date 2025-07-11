@@ -2,6 +2,28 @@ Administración de Tareas – 1ª Entrega
 
 Tema elegido: Administración de proyectos (Tema 7)
 
+Consigna
+
+Tema 7: Administración de proyectos
+Se debe realizar un sistema para seguimiento tareas.
+
+Funcionalidad básica:
+- Administrar proyectos y empleados asignados a ellos.
+- Administrar tareas: cada proyecto tiene tareas. Tiene una cantidad de empleados asignados.
+- Cada tarea tiene título, descripción, estimación y horas reales, entre otros datos.
+- Cada tarea está asignada a un empleado. Cada empleado tiene un costo por hora.
+- Se deben manejar n proyectos, cada uno con múltiples tareas.
+
+Adicionales:
+- Diferentes empleados cobran diferente su hora.
+- Manejar un pool de empleados: tener empleados libres y cuando se crea proyecto, hay una pantalla de asignación de empleado<=>proyecto.
+- Reportes sobre cada proyecto: costo en horas y costo en dinero de acuerdo con las horas.
+- Mantener un historial de los estados de cada tarea y el responsable del cambio mostrándolo al consultar una tarea.
+
+Bonus points:
+- Manejar backlog y sprints (las tareas están agrupadas por fecha - el sprint es solo un rango de fechas - las tareas que están en el backlog no tienen sprint, es decir no tienen fecha estimada de inicio ni de fin).
+- Mostrar un tablero, estilo kanban, con columnas con cada uno de los estados y en cada columna listar tareas.
+
 Alcance de esta entrega:
 
 CRUD completo de Tarea (alta, baja, modificación, consulta, listado)
