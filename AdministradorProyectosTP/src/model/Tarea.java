@@ -15,7 +15,6 @@ public class Tarea {
     private LocalDate inicioSprint;
     private LocalDate finSprint;
     private EstadoTarea estado;
-
     private Proyecto proyecto;
     private Empleado empleado;
 
