@@ -2,9 +2,6 @@ package model;
 
 import java.time.LocalDate;
 
-import model.Proyecto;
-import model.Empleado;
-
 /**
  * Representa una tarea de un proyecto.
  */
