@@ -5,8 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
 public class BotoneraPanel extends JPanel {
-	
-	private static final long serialVersionUID = 1L;
 
 	public BotoneraPanel(String textoOk, String textoCancel, String textoVolver,
                          ActionListener onOk,
