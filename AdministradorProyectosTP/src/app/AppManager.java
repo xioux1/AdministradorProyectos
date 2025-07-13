@@ -3,8 +3,20 @@ package app;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import service.*;
-import ui.*;
+// Import only the classes that are used to avoid wildcard imports and
+// improve readability.
+import service.TareaService;
+import service.ProyectoService;
+import service.EmpleadoService;
+import service.AsignacionService;
+import service.ReporteService;
+
+import ui.TareaPanel;
+import ui.ProyectoPanel;
+import ui.EmpleadoPanel;
+import ui.AsignacionPanel;
+import ui.ReportePanel;
+import ui.MenuPanel;
 
 public final class AppManager {
     private final JFrame frame = new JFrame("Administrador de Proyectos");
