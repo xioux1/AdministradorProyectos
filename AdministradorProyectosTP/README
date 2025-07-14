@@ -45,7 +45,7 @@ Swing hecho a mano
 Estructura del proyecto (carpetas principales):
 src/ui   – pantallas Swing
 src/service – lógica y validación
-src/dao – acceso a datos (in‑memory y JDBC)
+src/dao – acceso a datos mediante JDBC
 src/model – POJOs
 
 Cómo ejecutar:
