@@ -62,6 +62,13 @@ Reemplazá `<ruta-h2.jar>` por la ubicación del driver JDBC de H2.
 Se necesita JDK 17 o superior. La aplicación crea automáticamente la base de datos
 "tareas.db" la primera vez.
 
+### Importar en Eclipse
+
+Copiá el driver de H2 en `AdministradorProyectosTP/lib/h2.jar` antes de importar
+el proyecto. Eclipse tomará esa librería mediante el archivo `.classpath` que
+acompaña al repositorio. Seleccioná **File → Import → Existing Projects into
+Workspace** y elegí la carpeta `AdministradorProyectosTP`.
+
 
 Resumen de funcionalidades implementadas:
 
