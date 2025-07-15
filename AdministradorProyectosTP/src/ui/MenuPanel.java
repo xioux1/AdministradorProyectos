@@ -40,6 +40,7 @@ public class MenuPanel extends JPanel {
         asignaciones.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
+                manager.getAsignacionPanel().refrescar();
                 manager.mostrar(manager.getAsignacionPanel());
             }
         });
