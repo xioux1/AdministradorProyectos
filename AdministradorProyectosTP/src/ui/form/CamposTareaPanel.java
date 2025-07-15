@@ -26,8 +26,8 @@ public class CamposTareaPanel extends CamposPanel {
                 .add("Descripción:", descTxt)
                 .add("Horas Estimadas:", estTxt)
                 .add("Horas Reales:", realTxt)
-                .add("Inicio Sprint:", inicioTxt)
-                .add("Fin Sprint:", finTxt)
+                .add("Inicio Sprint (AAAA-MM-DD):", inicioTxt)
+                .add("Fin Sprint (AAAA-MM-DD):", finTxt)
                 .add("Proyecto ID:", proyectoTxt)
                 .add("Empleado ID:", empleadoTxt)
                 .add("Estado:", estadoBox)
@@ -46,7 +46,8 @@ public class CamposTareaPanel extends CamposPanel {
             if (existente.getEstado() != null)
                 estadoBox.setSelectedItem(existente.getEstado());
             proyectoTxt.setText(String.valueOf(existente.getProyecto().getId()));
-            empleadoTxt.setText(String.valueOf(existente.getEmpleado().getId()));
+            if (existente.getEmpleado() != null)
+                empleadoTxt.setText(String.valueOf(existente.getEmpleado().getId()));
         }
         if (historial != null) {
             for (model.HistorialEstado h : historial) {
@@ -71,5 +72,7 @@ public class CamposTareaPanel extends CamposPanel {
     }
     public model.EstadoTarea getEstado() { return (model.EstadoTarea) estadoBox.getSelectedItem(); }
     public int getProyectoId() { return Integer.parseInt(proyectoTxt.getText()); }
-    public int getEmpleadoId() { return Integer.parseInt(empleadoTxt.getText()); }
+    public Integer getEmpleadoId() {
+        return empleadoTxt.getText().isBlank() ? null : Integer.parseInt(empleadoTxt.getText());
+    }
 }

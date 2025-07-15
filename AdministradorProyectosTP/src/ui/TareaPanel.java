@@ -57,7 +57,9 @@ public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
                 t.getId(), t.getTitulo(),
                 t.getHorasEstimadas(), t.getHorasReales(),
                 t.getEstado(),
-                t.getProyecto().getId(), t.getEmpleado().getId(), t.getCostoHora()
+                t.getProyecto().getId(),
+                t.getEmpleado() != null ? t.getEmpleado().getId() : "",
+                t.getCostoHora()
         };
     }
 
@@ -113,7 +115,7 @@ public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
                 java.time.LocalDate fin    = campos.getFinSprint();
                 model.EstadoTarea estado   = campos.getEstado();
                 int proyecto  = campos.getProyectoId();
-                int empleado  = campos.getEmpleadoId();
+                Integer empleado  = campos.getEmpleadoId();
                 if (existente == null) {
                     service.alta(titulo, desc, est, real, inicio, fin, estado, proyecto, empleado);
                 } else {
