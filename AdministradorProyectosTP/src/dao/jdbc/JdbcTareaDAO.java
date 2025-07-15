@@ -49,7 +49,10 @@ public class JdbcTareaDAO implements TareaDAO {
                 ps.setNull(6, Types.DATE);
             ps.setString(7, t.getEstado() != null ? t.getEstado().name() : null);
             ps.setInt(8, t.getProyecto().getId());
-            ps.setInt(9, t.getEmpleado().getId());
+            if (t.getEmpleado() != null)
+                ps.setInt(9, t.getEmpleado().getId());
+            else
+                ps.setNull(9, Types.INTEGER);
             ps.setInt(10, t.getCostoHora());
             ps.executeUpdate();
 
@@ -81,7 +84,10 @@ public class JdbcTareaDAO implements TareaDAO {
                 ps.setNull(6, Types.DATE);
             ps.setString(7, t.getEstado() != null ? t.getEstado().name() : null);
             ps.setInt(8, t.getProyecto().getId());
-            ps.setInt(9, t.getEmpleado().getId());
+            if (t.getEmpleado() != null)
+                ps.setInt(9, t.getEmpleado().getId());
+            else
+                ps.setNull(9, Types.INTEGER);
             ps.setInt(10, t.getCostoHora());
             ps.setInt(11, t.getId());
             ps.executeUpdate();
@@ -164,15 +170,19 @@ public class JdbcTareaDAO implements TareaDAO {
 
     private Tarea mapRow(ResultSet rs) throws SQLException {
         int proyectoId = rs.getInt("proyecto_id");
-        int empleadoId = rs.getInt("empleado_id");
+        Integer empleadoId = rs.getObject("empleado_id") != null ? rs.getInt("empleado_id") : null;
 
         Proyecto proyecto;
         Empleado empleado;
         try {
             proyecto = proyectoDao.obtenerPorId(proyectoId)
                     .orElse(new Proyecto(proyectoId, ""));
-            empleado = empleadoDao.obtenerPorId(empleadoId)
-                    .orElse(new Empleado(empleadoId, "", rs.getInt("costo_hora")));
+            if (empleadoId != null) {
+                empleado = empleadoDao.obtenerPorId(empleadoId)
+                        .orElse(new Empleado(empleadoId, "", rs.getInt("costo_hora")));
+            } else {
+                empleado = null;
+            }
         } catch (DAOException e) {
             throw new SQLException("Error obteniendo referencias", e);
         }

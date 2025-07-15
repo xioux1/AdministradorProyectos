@@ -24,7 +24,7 @@ public class ReporteServiceImpl implements ReporteService {
             for (Tarea t : tareas) {
                 CostoProyecto c = map.computeIfAbsent(t.getProyecto().getId(), k -> new CostoProyecto(k,0,0));
                 c.horas += t.getHorasReales();
-                c.costo += t.getHorasReales() * t.getEmpleado().getCostoHora();
+                c.costo += t.getHorasReales() * t.getCostoHora();
             }
             return new ArrayList<>(map.values());
         } catch (DAOException e) {

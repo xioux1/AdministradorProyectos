@@ -35,15 +35,18 @@ public class TareaServiceImpl implements TareaService {
     @Override
     public void alta(String titulo, String desc, int hEst, int hReal,
                      LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
-                     int proyectoId, int empleadoId)
+                     int proyectoId, Integer empleadoId)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
         try {
             Proyecto proyecto = proyectoDao.obtenerPorId(proyectoId)
                     .orElseThrow(() -> new ServiceException("Proyecto inexistente"));
-            Empleado empleado = empleadoDao.obtenerPorId(empleadoId)
-                    .orElseThrow(() -> new ServiceException("Empleado inexistente"));
+            Empleado empleado = null;
+            if (empleadoId != null) {
+                empleado = empleadoDao.obtenerPorId(empleadoId)
+                        .orElseThrow(() -> new ServiceException("Empleado inexistente"));
+            }
 
             Tarea t = new Tarea(0, titulo, desc, hEst, hReal,
                                 inicio, fin, estado,
@@ -59,7 +62,7 @@ public class TareaServiceImpl implements TareaService {
     @Override
     public void modificar(int id, String titulo, String desc, int hEst, int hReal,
                           LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
-                          int proyectoId, int empleadoId)
+                          int proyectoId, Integer empleadoId)
             throws ValidacionException, ServiceException {
 
         ValidadorDeErrores.validarTarea(titulo, hEst, hReal);
@@ -67,8 +70,11 @@ public class TareaServiceImpl implements TareaService {
             Tarea previa = dao.obtenerPorId(id).orElse(null);
             Proyecto proyecto = proyectoDao.obtenerPorId(proyectoId)
                     .orElseThrow(() -> new ServiceException("Proyecto inexistente"));
-            Empleado empleado = empleadoDao.obtenerPorId(empleadoId)
-                    .orElseThrow(() -> new ServiceException("Empleado inexistente"));
+            Empleado empleado = null;
+            if (empleadoId != null) {
+                empleado = empleadoDao.obtenerPorId(empleadoId)
+                        .orElseThrow(() -> new ServiceException("Empleado inexistente"));
+            }
 
             dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal,
                                      inicio, fin, estado,

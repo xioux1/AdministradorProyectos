@@ -28,9 +28,10 @@ Alcance de esta entrega:
 
 CRUD completo de Tarea (alta, baja, modificación, consulta, listado)
 CRUD de Proyecto y Empleado
-Las tareas se vinculan a un proyecto y un empleado con costo por hora
+Las tareas se vinculan a un proyecto y opcionalmente a un empleado con costo por hora
 
 Se añadieron campos de inicio y fin de sprint y un estado para cada tarea.
+Las fechas se ingresan en formato AAAA-MM-DD.
 Se incluyó un tablero Kanban donde es posible mover las tareas entre
 estados mediante doble clic.
 
