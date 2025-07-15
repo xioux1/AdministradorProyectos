@@ -73,6 +73,15 @@ public class AsignacionPanel extends JPanel {
         cargarProyectos();
     }
 
+    /**
+     * Recarga la lista de proyectos desde el servicio.
+     * Llama internamente a {@link #cargarProyectos()} para actualizar las
+     * listas cuando se vuelve a mostrar el panel.
+     */
+    public void refrescar() {
+        cargarProyectos();
+    }
+
     private JPanel crearPanel(String titulo, JList<model.Empleado> list) {
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JLabel(titulo, SwingConstants.CENTER), BorderLayout.NORTH);

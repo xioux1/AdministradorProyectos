@@ -53,7 +53,7 @@ public final class AppManager {
     public JPanel getTareaPanel(){return tareaPanel;}
     public JPanel getProyectoPanel(){return proyectoPanel;}
     public JPanel getEmpleadoPanel(){return empleadoPanel;}
-    public JPanel getAsignacionPanel(){return asignacionPanel;}
+    public AsignacionPanel getAsignacionPanel(){return asignacionPanel;}
     public JPanel getReportePanel(){return reportePanel;}
     public JPanel getMenuPanel(){return menuPanel;}
 }
