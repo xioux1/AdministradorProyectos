@@ -15,11 +15,12 @@ public class CamposTareaPanel extends CamposPanel {
     private final JTextField inicioTxt = new JTextField();
     private final JTextField finTxt = new JTextField();
     private final JComboBox<model.EstadoTarea> estadoBox = new JComboBox<>(model.EstadoTarea.values());
-    private final JTextField proyectoTxt = new JTextField();
-    private final JTextField empleadoTxt = new JTextField();
+    private final JComboBox<model.Proyecto> proyectoBox = new JComboBox<>();
+    private final JComboBox<model.Empleado> empleadoBox = new JComboBox<>();
     private final JTextArea histArea = new JTextArea();
 
-    public CamposTareaPanel(model.Tarea existente, List<model.HistorialEstado> historial) {
+    public CamposTareaPanel(model.Tarea existente, List<model.HistorialEstado> historial,
+                            List<model.Proyecto> proyectos, List<model.Empleado> empleados) {
         histArea.setEditable(false);
         FormBuilder b = new FormBuilder()
                 .add("Título:", tituloTxt)
@@ -28,12 +29,28 @@ public class CamposTareaPanel extends CamposPanel {
                 .add("Horas Reales:", realTxt)
                 .add("Inicio Sprint (AAAA-MM-DD):", inicioTxt)
                 .add("Fin Sprint (AAAA-MM-DD):", finTxt)
-                .add("Proyecto ID:", proyectoTxt)
-                .add("Empleado ID:", empleadoTxt)
+                .add("Proyecto:", proyectoBox)
+                .add("Empleado:", empleadoBox)
                 .add("Estado:", estadoBox)
                 .add("Historial:", new JScrollPane(histArea));
         setLayout(new BorderLayout());
         add(b.build(), BorderLayout.CENTER);
+        if (proyectos != null) {
+            for (model.Proyecto p : proyectos) proyectoBox.addItem(p);
+        }
+        if (empleados != null) {
+            empleadoBox.addItem(null); // opción sin asignar
+            for (model.Empleado e : empleados) empleadoBox.addItem(e);
+            empleadoBox.setRenderer(new DefaultListCellRenderer() {
+                @Override
+                public java.awt.Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                                      boolean isSelected, boolean cellHasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    setText(value == null ? "" : value.toString());
+                    return this;
+                }
+            });
+        }
         if (existente != null) {
             tituloTxt.setText(existente.getTitulo());
             descTxt.setText(existente.getDescripcion());
@@ -45,9 +62,9 @@ public class CamposTareaPanel extends CamposPanel {
                 finTxt.setText(existente.getFinSprint().toString());
             if (existente.getEstado() != null)
                 estadoBox.setSelectedItem(existente.getEstado());
-            proyectoTxt.setText(String.valueOf(existente.getProyecto().getId()));
+            proyectoBox.setSelectedItem(existente.getProyecto());
             if (existente.getEmpleado() != null)
-                empleadoTxt.setText(String.valueOf(existente.getEmpleado().getId()));
+                empleadoBox.setSelectedItem(existente.getEmpleado());
         }
         if (historial != null) {
             for (model.HistorialEstado h : historial) {
@@ -56,8 +73,8 @@ public class CamposTareaPanel extends CamposPanel {
         }
     }
 
-    public CamposTareaPanel() {
-        this(null, null);
+    public CamposTareaPanel(List<model.Proyecto> proyectos, List<model.Empleado> empleados) {
+        this(null, null, proyectos, empleados);
     }
 
     public String getTitulo() { return tituloTxt.getText(); }
@@ -71,8 +88,6 @@ public class CamposTareaPanel extends CamposPanel {
         return finTxt.getText().isBlank() ? null : LocalDate.parse(finTxt.getText());
     }
     public model.EstadoTarea getEstado() { return (model.EstadoTarea) estadoBox.getSelectedItem(); }
-    public int getProyectoId() { return Integer.parseInt(proyectoTxt.getText()); }
-    public Integer getEmpleadoId() {
-        return empleadoTxt.getText().isBlank() ? null : Integer.parseInt(empleadoTxt.getText());
-    }
+    public model.Proyecto getProyecto() { return (model.Proyecto) proyectoBox.getSelectedItem(); }
+    public model.Empleado getEmpleado() { return (model.Empleado) empleadoBox.getSelectedItem(); }
 }

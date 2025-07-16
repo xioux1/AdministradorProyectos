@@ -2,6 +2,8 @@ package ui;
 
 import app.AppManager;
 import service.TareaService;
+import service.ProyectoService;
+import service.EmpleadoService;
 import service.ServiceException;
 
 import javax.swing.*;
@@ -12,13 +14,18 @@ import ui.componentes.Dialogs;
 public class KanbanPanel extends JPanel {
     private final AppManager manager;
     private final TareaService service;
+    private final ProyectoService proyectoService;
+    private final EmpleadoService empleadoService;
     private final DefaultListModel<model.Tarea> backlogModel = new DefaultListModel<>();
     private final DefaultListModel<model.Tarea> progresoModel = new DefaultListModel<>();
     private final DefaultListModel<model.Tarea> doneModel = new DefaultListModel<>();
 
-    public KanbanPanel(AppManager manager, TareaService service) {
+    public KanbanPanel(AppManager manager, TareaService service,
+                       ProyectoService proyectoService, EmpleadoService empleadoService) {
         this.manager = manager;
         this.service = service;
+        this.proyectoService = proyectoService;
+        this.empleadoService = empleadoService;
         setLayout(new BorderLayout(10,10));
 
         JPanel board = new JPanel(new GridLayout(1,3,10,10));
@@ -31,7 +38,7 @@ public class KanbanPanel extends JPanel {
         volver.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                manager.mostrar(new TareaPanel(manager, service));
+                manager.mostrar(new TareaPanel(manager, service, proyectoService, empleadoService));
             }
         });
         add(volver, BorderLayout.SOUTH);

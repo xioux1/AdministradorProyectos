@@ -2,6 +2,8 @@ package ui;
 
 import app.AppManager;
 import service.TareaService;
+import service.ProyectoService;
+import service.EmpleadoService;
 import service.ServiceException;
 import ui.componentes.BotoneraPanel;
 import ui.form.AbstractFormPanel;
@@ -18,16 +20,21 @@ import java.util.List;
 public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
 
     private final TareaService service;
+    private final ProyectoService proyectoService;
+    private final EmpleadoService empleadoService;
 
-    public TareaPanel(AppManager manager, TareaService service) {
+    public TareaPanel(AppManager manager, TareaService service,
+                      ProyectoService proyectoService, EmpleadoService empleadoService) {
         super(manager, new String[]{"ID", "Título", "Horas Est.", "Horas Reales", "Estado", "Proyecto", "Empleado", "Costo"});
         this.service  = service;
+        this.proyectoService = proyectoService;
+        this.empleadoService = empleadoService;
 
         BotoneraPanel botones = new BotoneraPanel(
                 "Agregar", "Eliminar", "Tablero",
                 e -> abrirFormulario(null),
                 e -> eliminarSeleccionada(),
-                e -> manager.mostrar(new KanbanPanel(manager, service))
+                e -> manager.mostrar(new KanbanPanel(manager, service, proyectoService, empleadoService))
         );
         JPanel south = new JPanel(new BorderLayout());
         south.add(botones, BorderLayout.CENTER);
@@ -100,7 +107,17 @@ public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
                 try { hist = service.historial(existente.getId()); }
                 catch(ServiceException ignore) {}
             }
-            campos = new CamposTareaPanel(existente, hist);
+            List<model.Proyecto> proyectos;
+            List<model.Empleado> empleados;
+            try {
+                proyectos = proyectoService.listado();
+                empleados = empleadoService.listado();
+            } catch (ServiceException e) {
+                Dialogs.error(this, "No se pudieron cargar los datos");
+                proyectos = java.util.Collections.emptyList();
+                empleados = java.util.Collections.emptyList();
+            }
+            campos = new CamposTareaPanel(existente, hist, proyectos, empleados);
             return campos;
         }
 
@@ -114,8 +131,8 @@ public class TareaPanel extends AbstractCrudPanel<model.Tarea> {
                 java.time.LocalDate inicio = campos.getInicioSprint();
                 java.time.LocalDate fin    = campos.getFinSprint();
                 model.EstadoTarea estado   = campos.getEstado();
-                int proyecto  = campos.getProyectoId();
-                Integer empleado  = campos.getEmpleadoId();
+                model.Proyecto proyecto  = campos.getProyecto();
+                model.Empleado empleado  = campos.getEmpleado();
                 if (existente == null) {
                     service.alta(titulo, desc, est, real, inicio, fin, estado, proyecto, empleado);
                 } else {

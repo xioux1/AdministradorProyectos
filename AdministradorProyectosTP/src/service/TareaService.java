@@ -10,12 +10,12 @@ public interface TareaService {
 
     void alta(String titulo, String desc, int hEst, int hReal,
               LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
-              int proyectoId, Integer empleadoId)
+              model.Proyecto proyecto, model.Empleado empleado)
             throws ValidacionException, ServiceException;
 
     void modificar(int id, String titulo, String desc, int hEst, int hReal,
                    LocalDate inicio, LocalDate fin, model.EstadoTarea estado,
-                   int proyectoId, Integer empleadoId)
+                   model.Proyecto proyecto, model.Empleado empleado)
             throws ValidacionException, ServiceException;
 
     void cambiarEstado(int id, model.EstadoTarea estado) throws ServiceException;
