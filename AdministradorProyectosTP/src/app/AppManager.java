@@ -42,7 +42,7 @@ public final class AppManager {
     public void initPanels(TareaService ts, ProyectoService ps,
                            EmpleadoService es, AsignacionService as,
                            ReporteService rs) {
-        tareaPanel = new TareaPanel(this, ts);
+        tareaPanel = new TareaPanel(this, ts, ps, es);
         proyectoPanel = new ProyectoPanel(this, ps);
         empleadoPanel = new EmpleadoPanel(this, es);
         asignacionPanel = new AsignacionPanel(this, as, ps);
