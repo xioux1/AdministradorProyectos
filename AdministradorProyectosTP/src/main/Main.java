@@ -25,7 +25,7 @@ public class Main {
         ProyectoDAO proyectoDao = new JdbcProyectoDAO(c);
         EmpleadoDAO empleadoDao = new JdbcEmpleadoDAO(c);
         TareaDAO tareaDao      = new JdbcTareaDAO(c, proyectoDao, empleadoDao);
-        HistorialDAO histDao    = new JdbcHistorialDAO(c);
+        HistorialDAO histDao    = new JdbcHistorialDAO(c, tareaDao);
         AsignacionDAO asigDao   = new JdbcAsignacionDAO(c);
 
         TareaService tareaSvc      = new TareaServiceImpl(tareaDao, histDao, proyectoDao, empleadoDao);
