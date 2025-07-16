@@ -38,7 +38,7 @@ public class TareaServiceImpl implements TareaService {
                                 proyecto, empleado);
             dao.crear(t);
             if(estado != null)
-                historialDao.registrar(new HistorialEstado(t.getId(), estado, "creacion", java.time.LocalDateTime.now()));
+                historialDao.registrar(new HistorialEstado(t, estado, "creacion", java.time.LocalDateTime.now()));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo guardar la tarea", ex);
         }
@@ -54,11 +54,12 @@ public class TareaServiceImpl implements TareaService {
         try {
             Tarea previa = dao.obtenerPorId(id).orElse(null);
 
-            dao.actualizar(new Tarea(id, titulo, desc, hEst, hReal,
-                                     inicio, fin, estado,
-                                     proyecto, empleado));
+            Tarea actualizada = new Tarea(id, titulo, desc, hEst, hReal,
+                                         inicio, fin, estado,
+                                         proyecto, empleado);
+            dao.actualizar(actualizada);
             if(previa != null && previa.getEstado() != estado)
-                historialDao.registrar(new HistorialEstado(id, estado, "modificacion", java.time.LocalDateTime.now()));
+                historialDao.registrar(new HistorialEstado(actualizada, estado, "modificacion", java.time.LocalDateTime.now()));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo actualizar la tarea", ex);
         }
@@ -68,7 +69,9 @@ public class TareaServiceImpl implements TareaService {
     public void cambiarEstado(int id, model.EstadoTarea estado) throws ServiceException {
         try {
             dao.actualizarEstado(id, estado);
-            historialDao.registrar(new HistorialEstado(id, estado, "cambio", java.time.LocalDateTime.now()));
+            Tarea t = dao.obtenerPorId(id)
+                    .orElse(new Tarea(id, "", "", 0, 0, null, null, estado, null, null));
+            historialDao.registrar(new HistorialEstado(t, estado, "cambio", java.time.LocalDateTime.now()));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo cambiar el estado", ex);
         }

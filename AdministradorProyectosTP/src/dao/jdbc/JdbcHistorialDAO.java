@@ -2,6 +2,8 @@ package dao.jdbc;
 
 import dao.DAOException;
 import dao.HistorialDAO;
+import dao.TareaDAO;
+import model.Tarea;
 import model.EstadoTarea;
 import model.HistorialEstado;
 
@@ -12,9 +14,11 @@ import java.util.List;
 
 public class JdbcHistorialDAO implements HistorialDAO {
     private final Connection conn;
+    private final TareaDAO tareaDao;
 
-    public JdbcHistorialDAO(Connection conn) throws DAOException {
+    public JdbcHistorialDAO(Connection conn, TareaDAO tareaDao) throws DAOException {
         this.conn = conn;
+        this.tareaDao = tareaDao;
         try {
             crearTabla();
         } catch (SQLException e) {
@@ -72,9 +76,17 @@ public class JdbcHistorialDAO implements HistorialDAO {
     }
 
     private HistorialEstado mapRow(ResultSet rs) throws SQLException {
+        int tareaId = rs.getInt("tarea_id");
+        Tarea tarea;
+        try {
+            tarea = tareaDao.obtenerPorId(tareaId)
+                    .orElse(new Tarea(tareaId, "", "", 0, 0, null, null, null, null, null));
+        } catch (DAOException e) {
+            throw new SQLException("Error obteniendo tarea", e);
+        }
         return new HistorialEstado(
                 rs.getInt("id"),
-                rs.getInt("tarea_id"),
+                tarea,
                 EstadoTarea.valueOf(rs.getString("estado")),
                 rs.getString("responsable"),
                 rs.getTimestamp("fecha").toLocalDateTime()
