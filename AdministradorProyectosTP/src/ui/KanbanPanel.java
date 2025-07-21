@@ -72,7 +72,7 @@ public class KanbanPanel extends JPanel {
             service.cambiarEstado(t.getId(), nuevo);
             cargarDatos();
         } catch (ServiceException ex) {
-            Dialogs.error(this, "No se pudo mover la tarea");
+            Dialogs.error(this, ex.getMessage());
         }
     }
 

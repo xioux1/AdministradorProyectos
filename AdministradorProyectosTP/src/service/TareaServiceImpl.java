@@ -70,7 +70,7 @@ public class TareaServiceImpl implements TareaService {
         try {
             dao.actualizarEstado(id, estado);
             Tarea t = dao.obtenerPorId(id)
-                    .orElse(new Tarea(id, "", "", 0, 0, null, null, estado, null, null));
+                    .orElseThrow(() -> new ServiceException("Tarea no encontrada"));
             historialDao.registrar(new HistorialEstado(t, estado, "cambio", java.time.LocalDateTime.now()));
         } catch (DAOException ex) {
             throw new ServiceException("No se pudo cambiar el estado", ex);
