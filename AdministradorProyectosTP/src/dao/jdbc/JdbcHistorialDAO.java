@@ -80,7 +80,7 @@ public class JdbcHistorialDAO implements HistorialDAO {
         Tarea tarea;
         try {
             tarea = tareaDao.obtenerPorId(tareaId)
-                    .orElse(new Tarea(tareaId, "", "", 0, 0, null, null, null, null, null));
+                    .orElseThrow(() -> new SQLException("Tarea " + tareaId + " inexistente"));
         } catch (DAOException e) {
             throw new SQLException("Error obteniendo tarea", e);
         }
