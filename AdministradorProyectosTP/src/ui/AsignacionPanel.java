@@ -7,7 +7,9 @@ import service.ServiceException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
+import ui.componentes.BotonesPanel;
 import ui.componentes.Dialogs;
 
 public class AsignacionPanel extends JPanel {
@@ -44,31 +46,13 @@ public class AsignacionPanel extends JPanel {
         center.add(crearPanel("Libres", libresList));
         add(center, BorderLayout.CENTER);
 
-        JButton asignar = new JButton("Asignar");
-        JButton desasignar = new JButton("Desasignar");
-        JButton volver = new JButton("Volver");
-        JPanel south = new JPanel(new FlowLayout());
-        south.add(asignar); south.add(desasignar); south.add(volver);
-        add(south, BorderLayout.SOUTH);
-
-        asignar.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                asignarEmpleado();
-            }
-        });
-        desasignar.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                desasignarEmpleado();
-            }
-        });
-        volver.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                manager.mostrar(manager.getMenuPanel());
-            }
-        });
+        String[] textos = {"Asignar", "Desasignar", "Volver"};
+        ActionListener[] listeners = {
+            e -> asignarEmpleado(),
+            e -> desasignarEmpleado(),
+            e -> manager.mostrar(manager.getMenuPanel())
+        };
+        add(new BotonesPanel(textos, listeners), BorderLayout.SOUTH);
 
         cargarProyectos();
     }

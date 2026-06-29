@@ -8,7 +8,9 @@ import service.ServiceException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
+import ui.componentes.BotonesPanel;
 import ui.componentes.Dialogs;
 
 public class KanbanPanel extends JPanel {
@@ -34,14 +36,10 @@ public class KanbanPanel extends JPanel {
         board.add(createColumn("Terminada", doneModel));
         add(board, BorderLayout.CENTER);
 
-        JButton volver = new JButton("Volver");
-        volver.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                manager.mostrar(new TareaPanel(manager, service, proyectoService, empleadoService));
-            }
-        });
-        add(volver, BorderLayout.SOUTH);
+        ActionListener[] listeners = {
+            e -> manager.mostrar(new TareaPanel(manager, service, proyectoService, empleadoService))
+        };
+        add(new BotonesPanel(new String[]{"Volver"}, listeners), BorderLayout.SOUTH);
 
         cargarDatos();
     }
