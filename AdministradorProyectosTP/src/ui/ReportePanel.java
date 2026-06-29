@@ -6,9 +6,9 @@ import service.ReporteService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import ui.componentes.BotonesPanel;
 import ui.componentes.Dialogs;
 
 public class ReportePanel extends JPanel {
@@ -19,14 +19,9 @@ public class ReportePanel extends JPanel {
         };
         JTable tabla = new JTable(modelo);
         add(new JScrollPane(tabla), BorderLayout.CENTER);
-        JButton volver = new JButton("Volver");
-        volver.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                manager.mostrar(manager.getMenuPanel());
-            }
-        });
-        add(volver, BorderLayout.SOUTH);
+
+        ActionListener[] listeners = { e -> manager.mostrar(manager.getMenuPanel()) };
+        add(new BotonesPanel(new String[]{"Volver"}, listeners), BorderLayout.SOUTH);
         try{
             List<service.ReporteService.CostoProyecto> datos = service.resumenCostos();
             for(service.ReporteService.CostoProyecto c:datos){
